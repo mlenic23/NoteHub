@@ -1,0 +1,13 @@
+
+{% block title %}Add a New Note{% endblock %}
+
+{% block content %}
+    <h2>Add a New Note</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="note_text">Note Text:</label>
+        <textarea id="note_text" name="note_text" rows="4" cols="50"></textarea><br><br>
+        <button type="submit">Save Note</button>
+    </form>
+    <a href="{% url 'notes:index' %}">Back to Notes</a>
+{% endblock %}

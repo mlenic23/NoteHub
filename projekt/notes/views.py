@@ -1,12 +1,10 @@
-from django.shortcuts import get_object_or_404, render
-
-# Create your views here.
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
 from .models import Note
 
 
 def index(request):
-    latest_note_list = Note.objects.order_by('-pub_date')[:5]
+    latest_note_list = Note.objects.all()
     context = {'latest_note_list': latest_note_list}
     return render(request, 'notes/index.html', context)
 
@@ -20,3 +18,16 @@ def results(request, note_id):
 
 def like(request, note_id):
     return HttpResponse("You like note %s." % note_id)
+
+def add_note(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+
+        if not title or not content:
+            return HttpResponse("Title and content are required.", status=400)
+
+        Note.objects.create(title=title, content=content)
+        return redirect('index') 
+
+    return render(request, 'notes/add_note.html')

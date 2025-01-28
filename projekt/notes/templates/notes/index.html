@@ -1,9 +1,21 @@
-{% if latest_note_list %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notes</title>
+</head>
+<body>
+    <h1>Notes</h1>
     <ul>
-    {% for note in latest_note_list %}
-    <li><a href="{% url 'notes:detail' note.id %}">{{ note.note_text }}</a></li>
-    {% endfor %}
+        {% for note in latest_note_list %}
+            <li>
+                <a href="{% url 'notes:detail' note_id=note.id %}">
+                    {{ note.note_text }}
+                </a>
+            </li>
+        {% empty %}
+            <li>No notes available.</li>
+        {% endfor %}
     </ul>
-{% else %}
-    <p>No notes are available.</p>
-{% endif %}
+    <a href="{% url 'notes:add_note' %}">Add a New Note</a>
+</body>
+</html>
