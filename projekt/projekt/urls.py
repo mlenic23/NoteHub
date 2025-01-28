@@ -1,5 +1,5 @@
 """
-URL configuration for slikapp project.
+URL configuration for projekt project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.1/topics/http/urls/
@@ -15,27 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-
-
-from images.views import (
-    home, 
-    index, 
-    create_image,
-    detail, 
-    create_comment,
-    profile
-)
+from django.urls import include, path
 
 urlpatterns = [
+    path('notes/', include('notes.urls')),
     path('admin/', admin.site.urls),
-    path("accounts/", include("django.contrib.auth.urls")),
-    path('', home, name="homepage"),
-    path('slike/', index, name="index"),
-    path('slike/create/', create_image, name="create-image"),
-    path('slike/<int:id>/', detail, name="detail"),
-    path('slike/<int:id>/create-comment/',
-         create_comment,
-         name="create-comment"),
-    path('profile/', profile, name="profile"),
 ]
