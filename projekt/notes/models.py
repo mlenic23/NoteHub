@@ -5,11 +5,12 @@ from django.utils import timezone
 # Create your models here.
 
 class Note(models.Model):
-    note_text = models.CharField(max_length=200)
-    pub_date = models.DateTimeField('date published')
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    pub_date = models.DateTimeField(auto_now_add=True)
+    likes = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return self.note_text
+        return self.title
 
-    def was_published_recently(self):
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+   

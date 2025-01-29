@@ -1,21 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Notes</title>
-</head>
-<body>
-    <h1>Notes</h1>
-    <ul>
-        {% for note in latest_note_list %}
-            <li>
-                <a href="{% url 'notes:detail' note_id=note.id %}">
-                    {{ note.note_text }}
-                </a>
-            </li>
-        {% empty %}
-            <li>No notes available.</li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'notes:add_note' %}">Add a New Note</a>
-</body>
-</html>
+{% extends 'notes/base.html' %}
+
+{% load static %}
+
+{% block title %}Notes{% endblock %}
+
+{% block content %}
+    <h2>All Notes</h2>
+
+    <div class="notes-container">
+    {% for note in latest_note_list %}
+        <div class="note">
+            <h3><a href="{% url 'notes:detail' note.id %}">{{ note.title }}</a></h3>  
+            <p>{{ note.content }}</p>  
+            <p><strong>Likes:</strong> {{ note.likes }}</p>
+            <p>Published: {{ note.pub_date }}</p>  
+        </div>
+    {% empty %}
+        <p>No notes available.</p>
+    {% endfor %}
+    </div>
+    
+{% endblock %}

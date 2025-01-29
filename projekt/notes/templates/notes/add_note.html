@@ -1,3 +1,4 @@
+{% extends 'notes/base.html' %}
 
 {% block title %}Add a New Note{% endblock %}
 
@@ -5,9 +6,14 @@
     <h2>Add a New Note</h2>
     <form method="post">
         {% csrf_token %}
-        <label for="note_text">Note Text:</label>
-        <textarea id="note_text" name="note_text" rows="4" cols="50"></textarea><br><br>
+        
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required><br><br>
+
+        <label for="content">Content:</label>
+        <textarea id="content" name="content" rows="4" cols="50" required></textarea><br><br>
+
         <button type="submit">Save Note</button>
     </form>
-    <a href="{% url 'notes:index' %}">Back to Notes</a>
+    
 {% endblock %}

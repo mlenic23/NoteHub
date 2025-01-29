@@ -1,11 +1,16 @@
+{% extends 'notes/base.html' %}
 
+{% block title %}{{ note.title }}{% endblock %}
 
-<h1>{{ note.note_text }}</h1>
+{% block content %}
+    <h2>{{ note.title }}</h2>
+    <p>{{ note.content }}</p>
+    <p>Published: {{ note.pub_date }}</p>
 
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
-<form action="{% url 'notes:like' note.id %}" method="post">
-{% csrf_token %}
-
-<input type="submit" value="Like">
-</form>
+    <form class = 'like' action="{% url 'notes:like' note.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Like</button>
+    </form>
+    
+    <a href="{% url 'notes:index' %}">Back to Notes</a>
+{% endblock %}

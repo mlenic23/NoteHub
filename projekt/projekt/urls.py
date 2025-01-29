@@ -19,7 +19,7 @@ from django.urls import include, path
 from notes import views
 
 urlpatterns = [
-    # path('', views.index, name='index'),
+     path('', views.home, name='home'),
      path('notes/', include('notes.urls')),
      path('admin/', admin.site.urls), 
      

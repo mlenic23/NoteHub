@@ -1,0 +1,239 @@
+body {
+    background-color: white; 
+    color: #2c3e50;
+    font-family: Arial, sans-serif; 
+    margin: 0;
+    padding: 0;
+}
+
+.notes-container {
+    background-color: #e0f7fa; 
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 30px;
+}
+
+nav {
+    background-color: #3498db; 
+    padding: 10px 0;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 18px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+h1, h2 {
+    color: #2980b9;
+    font-weight: bold;
+}
+
+.card {
+    background-color: #ffffff; 
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.card-title {
+    color: #3498db; 
+    font-size: 20px;
+}
+
+.card-text {
+    color: #7f8c8d; 
+    font-size: 16px;
+}
+
+.card a {
+    color: #3498db; 
+    text-decoration: none;
+}
+
+.card a:hover {
+    text-decoration: underline;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    color: #2c3e50; 
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #bdc3c7; 
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+input:focus, textarea:focus {
+    border-color: #3498db; 
+    outline: none;
+}
+
+button {
+    background-color: #3498db; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #2980b9; 
+}
+
+a.btn-link {
+    color: #3498db;
+    text-decoration: none;
+}
+
+a.btn-link:hover {
+    text-decoration: underline;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    text-align: center;
+    color: #4a90e2;
+    margin-top: 20px;
+}
+
+.note {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 40px;
+    padding: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.note:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.note h3 {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.note h3 a {
+    text-decoration: none;
+    color: #4a90e2;
+    transition: color 0.3s;
+}
+
+.note h3 a:hover {
+    color: #1c66b1;
+}
+
+.note p {
+    font-size: 1em;
+    color: #666;
+    line-height: 1.6;
+}
+
+.note p:last-of-type {
+    font-size: 0.9em;
+    color: #999;
+    text-align: right;
+}
+
+form {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    width: 80%;
+    max-width: 600px;
+}
+
+.like{
+    background-color: none;
+    border: none;
+    border-radius: none;
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    max-width: 0px;
+    padding-bottom:20px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+}
+
+form input, form textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+    font-size: 1em;
+}
+
+form button {
+    background-color: #4a90e2;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+form button:hover {
+    background-color: #1c66b1;
+}
+
+a {
+    color: #4a90e2;
+    text-decoration: none;
+    font-size: 1.1em;
+}
+
+a:hover {
+    color: #1c66b1;
+}

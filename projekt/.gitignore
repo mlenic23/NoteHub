@@ -1,2 +1,7 @@
-/env/
-/notes/__pycache__/*
+
+venv/
+env/
+
+__pycache__/
+notes/__pycache__/
+projekt/projekt/__pycache__/
