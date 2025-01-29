@@ -13,6 +13,9 @@
             <h3><a href="{% url 'notes:detail' note.id %}">{{ note.title }}</a></h3>  
             <p>{{ note.content }}</p>  
             <p><strong>Likes:</strong> {{ note.likes }}</p>
+            <a href="{% url 'notes:delete_note' note.id %}" onclick="return confirm('Are you sure you want to delete this note?');">
+                Delete
+            </a>
             <p>Published: {{ note.pub_date }}</p>  
         </div>
     {% empty %}

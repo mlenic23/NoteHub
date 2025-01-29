@@ -39,3 +39,12 @@ def add_note(request):
         return redirect('notes:index')  # Preusmeri na stranicu sa svim beleškama
 
     return render(request, 'notes/add_note.html')
+
+
+def delete_note(request, note_id):
+    note = get_object_or_404(Note, id=note_id)
+
+    note.delete()
+    
+    return redirect('notes:index')  
+
