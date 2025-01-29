@@ -33,10 +33,9 @@ def add_note(request):
         if not title or not content:
             return HttpResponse("Title and content are required.", status=400)
 
-        # Kreira novu belešku sa naslovom i sadržajem
         Note.objects.create(title=title, content=content)
 
-        return redirect('notes:index')  # Preusmeri na stranicu sa svim beleškama
+        return redirect('notes:index') 
 
     return render(request, 'notes/add_note.html')
 
