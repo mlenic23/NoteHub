@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
-from .models import Note
+from .models import Note, Comment
 
 
 def index(request):
@@ -13,7 +13,9 @@ def home(request):
 
 def detail(request, note_id):
     note = get_object_or_404(Note, pk=note_id)
-    return render(request, 'notes/detail.html', {'note': note})
+    comments = note.comments.all()
+
+    return render(request, 'notes/detail.html', {'note': note, 'comments': comments})
 
 #def results(request, note_id):
    # response = "You're looking at the results of note %s."
@@ -47,3 +49,11 @@ def delete_note(request, note_id):
     
     return redirect('notes:index')  
 
+
+def add_comment(request, note_id):
+    note = get_object_or_404(Note, pk=note_id)
+    if request.method == 'POST':
+        text = request.POST.get("comment_text")
+        if text:
+            Comment.objects.create(note=note, text=text)
+    return redirect('notes:detail', note_id=note.id)
