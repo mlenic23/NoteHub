@@ -14,6 +14,9 @@ body {
 }
 
 nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background-color: #3498db; 
     padding: 10px 0;
 }
@@ -27,6 +30,16 @@ nav a {
 
 nav a:hover {
     text-decoration: underline;
+}
+
+.nav-left {
+    display: flex;
+    gap: 15px;
+}
+
+.nav-right {
+    display: flex;
+    gap: 15px;
 }
 
 .container {

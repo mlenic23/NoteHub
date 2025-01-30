@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import Note, Comment
 
 
+
 def index(request):
     latest_note_list = Note.objects.all()
     context = {'latest_note_list': latest_note_list}
@@ -57,3 +58,5 @@ def add_comment(request, note_id):
         if text:
             Comment.objects.create(note=note, text=text)
     return redirect('notes:detail', note_id=note.id)
+
+
