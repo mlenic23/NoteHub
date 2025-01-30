@@ -5,9 +5,27 @@ from .models import Note, Comment
 
 
 def index(request):
-    latest_note_list = Note.objects.all()
-    context = {'latest_note_list': latest_note_list}
+    search_query = request.GET.get('search', '') 
+    order = request.GET.get('order', 'desc') 
+
+    if search_query:
+        notes = Note.objects.filter(title__icontains=search_query)
+    else:
+        notes = Note.objects.all()
+
+    if order == 'asc':
+        notes = notes.order_by('pub_date')
+    else:
+        notes = notes.order_by('-pub_date') 
+
+    context = {
+        'latest_note_list': notes,
+        'current_order': order,
+        'search_query': search_query,
+    }
     return render(request, 'notes/index.html', context)
+
+
 
 def home(request):
     return render(request, "notes/home.html")

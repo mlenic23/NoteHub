@@ -1,26 +1,36 @@
 {% extends 'notes/base.html' %}
 
-{% load static %}
-
 {% block title %}Notes{% endblock %}
 
 {% block content %}
     <h2>All Notes</h2>
 
+    <form method="get" action="{% url 'notes:index' %}" class="sort-form">
+        <input type="text" name="search" placeholder="Search notes..." value="{{ search_query }}">
+
+        <div class="search-sort-buttons">
+            <button type="submit" class="search-button">Search</button>
+
+            <select name="order" onchange="this.form.submit()"> <!-- Automatski podnosi formu pri promeni -->
+                <option value="desc" {% if current_order == 'desc' %}selected{% endif %}>Newest to Oldest</option>
+                <option value="asc" {% if current_order == 'asc' %}selected{% endif %}>Oldest to Newest</option>
+            </select>
+        </div>
+    </form>
+
     <div class="notes-container">
-    {% for note in latest_note_list %}
+        {% for note in latest_note_list %}
         <div class="note">
-            <h3><a href="{% url 'notes:detail' note.id %}">{{ note.title }}</a></h3>  
-            <p>{{ note.content }}</p>  
+            <h3><a href="{% url 'notes:detail' note.id %}">{{ note.title }}</a></h3>
+            <p>{{ note.content }}</p>
             <p><strong>Likes:</strong> {{ note.likes }}</p>
+            <p>Published: {{ note.pub_date }}</p>
             <a href="{% url 'notes:delete_note' note.id %}" onclick="return confirm('Are you sure you want to delete this note?');">
                 Delete
             </a>
-            <p>Published: {{ note.pub_date }}</p>  
         </div>
-    {% empty %}
+        {% empty %}
         <p>No notes available.</p>
-    {% endfor %}
+        {% endfor %}
     </div>
-    
 {% endblock %}
