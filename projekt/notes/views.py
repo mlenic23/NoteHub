@@ -1,6 +1,8 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
 from .models import Note, Comment
+from accounts.models import CustomUser
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -46,15 +48,17 @@ def like(request, note_id):
     note.save()  
     return redirect("notes:detail", note_id=note_id) 
 
+@login_required
 def add_note(request):
     if request.method == 'POST':
         title = request.POST.get('title')
         content = request.POST.get('content')
+        is_public = 'is_public' in request.POST
 
         if not title or not content:
             return HttpResponse("Title and content are required.", status=400)
 
-        Note.objects.create(title=title, content=content)
+        Note.objects.create(user=request.user, title=title, content=content, is_public=is_public)
 
         return redirect('notes:index') 
 

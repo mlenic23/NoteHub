@@ -1,14 +1,15 @@
 from .models import Note, Comment, Account
-from django.contrib.auth.models import User
+from accounts.models import CustomUser
 from django.contrib.auth import authenticate
 
 from django import forms
 from django.forms import ModelForm
+from .models import PrivateNoteModel
 
 
 class UserForm(ModelForm):
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['username', 'email']
 
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
@@ -16,7 +17,7 @@ class UserForm(ModelForm):
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
-        if User.objects.filter(username=username).exists():
+        if CustomUser.objects.filter(username=username).exists():
             raise forms.ValidationError('This username is already taken.')
         return username
 
@@ -59,3 +60,9 @@ class AuthenticationForm(forms.Form):
                 raise forms.ValidationError("Invalid username or password.")
             self.user = user 
         return cleaned_data
+    
+
+class PrivateNoteForm(forms.ModelForm):
+    class Meta:
+        model = PrivateNoteModel
+        fields = ['content']

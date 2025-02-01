@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from notes.models import Note, Comment, Account
 from notes.forms import UserForm, AccountForm, AuthenticationForm
 from django.contrib import messages
+from accounts.models import CustomUser
+from notes.forms import PrivateNoteForm
 # Create your views here.
 
 def register(request):
@@ -37,14 +39,16 @@ def register(request):
 
 
 def profile(request, user_id):
-    user = get_object_or_404(User, pk=user_id)
+    user = get_object_or_404(CustomUser, pk=user_id)
 
     try:
-        account_user = user.account_user  
-        regular_user = account_user.regular_user  
+        account_user = user.account_user 
+        regular_user = account_user.regular_user
+        superuser = account_user.superuser  
     except Account.DoesNotExist:
         account_user = None
         regular_user = None
+        superuser = None
 
     notes = Note.objects.filter(user=user) 
 
@@ -55,8 +59,10 @@ def profile(request, user_id):
     public_notes = notes.filter(is_public=True)
 
     context = {
-        'profile_user': account_user,
+        'profile_user': user,
+        'account_user' : account_user,
         'regular_user': regular_user,
+        'superuser': superuser,
         'private_notes': private_notes,
         'public_notes': public_notes,
     }
