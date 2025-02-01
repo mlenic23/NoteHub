@@ -38,9 +38,6 @@ def detail(request, note_id):
 
     return render(request, 'notes/detail.html', {'note': note, 'comments': comments})
 
-#def results(request, note_id):
-   # response = "You're looking at the results of note %s."
-    # return HttpResponse(response % note_id)
 
 def like(request, note_id):
     note = get_object_or_404(Note, id=note_id)

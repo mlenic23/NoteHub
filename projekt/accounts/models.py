@@ -4,7 +4,6 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 class CustomUser(AbstractUser):
-    # NEW FOR THE ROLES
     class Types(models.TextChoices):
         ADMIN = "ADMIN", "Admin"
         SUPERUSER = "SUPERUSER", "Superuser"
