@@ -14,7 +14,7 @@ class PrivateNoteModel(models.Model):
 
 
 class Note(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True, related_name='notes')
+    user = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, null=True, blank=True, related_name='notes')
     title = models.CharField(max_length=200)
     content = models.TextField()
     pub_date = models.DateTimeField(auto_now_add=True)
@@ -44,5 +44,5 @@ class Account(models.Model):
     superuser = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.name} ({self.user.username}, {'Superuser' if self.superuser else 'Regular user'})"
+        return f"{self.name} ({self.user.email}, {self.user.get_type_display()})"
     

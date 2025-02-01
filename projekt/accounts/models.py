@@ -22,4 +22,4 @@ class CustomUser(AbstractUser):
     REQUIRED_FIELDS = ["username"]
 
     def __str__(self):
-        return self.email
+        return f"{self.email} - {self.get_type_display()}"

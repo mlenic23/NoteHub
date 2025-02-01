@@ -16,9 +16,12 @@ def register(request):
         account_form = AccountForm(request.POST)
       
         if user_form.is_valid() and account_form.is_valid():
-            user = user_form.save()
-
+            user = user_form.save(commit=False)
             user.set_password(user_form.cleaned_data['password1'])
+            user.email = user_form.cleaned_data['email']
+
+            user_type = request.POST.get('type', 'REGULARUSER')
+            user.type = user_type
             user.save()
 
             account = account_form.save(commit=False)
@@ -30,43 +33,43 @@ def register(request):
             return redirect('accounts:login')
         else:
             messages.error(request, "Registration failed. Please correct the errors below.")
-            return render(request, 'accounts/register.html', {'user_form': user_form, 'account_form': account_form})
+            
     else:
         user_form = UserForm()
         account_form = AccountForm()
-        return render(request, 'accounts/register.html', {'user_form': user_form, 'account_form': account_form})
+    return render(request, 'accounts/register.html', {'user_form': user_form, 'account_form': account_form})
     
-
 
 def profile(request, user_id):
     user = get_object_or_404(CustomUser, pk=user_id)
 
     try:
-        account_user = user.account_user 
-        regular_user = account_user.regular_user
-        superuser = account_user.superuser  
+        account = user.account  # Ispravno: koristi `user.account`
     except Account.DoesNotExist:
-        account_user = None
-        regular_user = None
-        superuser = None
+        account = None
 
-    notes = Note.objects.filter(user=user) 
+    regular_user = account.regular_user if account else None
+    superuser = account.superuser if account else None
+
+    notes = Note.objects.filter(user=user)
 
     private_notes = []
     for note in notes:
-        private_notes.extend(note.private_notes.all()) 
+        private_notes.extend(note.private_notes.all())
 
     public_notes = notes.filter(is_public=True)
 
     context = {
         'profile_user': user,
-        'account_user' : account_user,
+        'account': account,
         'regular_user': regular_user,
         'superuser': superuser,
         'private_notes': private_notes,
         'public_notes': public_notes,
     }
+
     return render(request, 'accounts/profile.html', context)
+
     
 
 def logout_view(request):

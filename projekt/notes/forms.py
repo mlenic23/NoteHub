@@ -3,11 +3,12 @@ from accounts.models import CustomUser
 from django.contrib.auth import authenticate
 
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 from .models import PrivateNoteModel
 
 
-class UserForm(ModelForm):
+class UserForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = ['username', 'email']
@@ -32,11 +33,8 @@ class UserForm(ModelForm):
 class AccountForm(ModelForm):
     class Meta: 
         model = Account
-        fields = ['name', 'regular_user']
+        fields = ['name']
 
-        labels = {
-            "regular_user": "Do you want to be a regular user?",
-        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -46,18 +44,18 @@ class AccountForm(ModelForm):
 
 
 class AuthenticationForm(forms.Form):
-    username = forms.CharField(max_length=254)
+    email = forms.CharField(max_length=254)
     password = forms.CharField(widget=forms.PasswordInput)
 
     def clean(self):
         cleaned_data = super().clean()
-        username = cleaned_data.get("username")
+        username = cleaned_data.get("email")
         password = cleaned_data.get("password")
         
-        if username and password:
-            user = authenticate(username=username, password=password)
+        if email and password:
+            user = authenticate(username=email, password=password)
             if user is None:
-                raise forms.ValidationError("Invalid username or password.")
+                raise forms.ValidationError("Invalid email or password.")
             self.user = user 
         return cleaned_data
     
