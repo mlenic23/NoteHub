@@ -16,6 +16,11 @@
         <label for="is_public">Make it public:</label>
         <input type="checkbox" id="is_public" name="is_public"><br><br>
 
+        {% if user.is_authenticated and user.type == 'SUPERUSER' %}
+            <label for="is_important">Mark as Important</label>
+            <input type="checkbox" id="is_important" name="is_important">
+        {% endif %}
+
         <button type="submit">Save Note</button>
     </form>
     

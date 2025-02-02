@@ -29,6 +29,9 @@
                 {% if user.is_superuser %}
                     <a href="/admin">Admin dashboard</a>
                 {% endif %}
+                {% if user.type == 'SUPERUSER' %}
+                    <a href="{% url 'notes:locked_notes' user.id %}" class="btn btn-info">Locked Notes</a>
+                {% endif %}
                 <a href="{% url 'accounts:profile' user.id %}">My Profile</a> 
                 <a href="{% url 'logout' %}">Logout</a>
             {% else %}

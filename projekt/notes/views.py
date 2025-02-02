@@ -2,7 +2,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
 from .models import Note, Comment
 from accounts.models import CustomUser
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+from .forms import NoteForm  
 
 
 
@@ -11,14 +12,15 @@ def index(request):
     order = request.GET.get('order', 'desc') 
 
     if search_query:
-        notes = Note.objects.filter(title__icontains=search_query)
+        notes = Note.objects.filter(title__icontains=search_query, is_public= True)
     else:
-        notes = Note.objects.all()
+        notes = Note.objects.filter(is_public = True)
 
     if order == 'asc':
-        notes = notes.order_by('pub_date')
+        notes = notes.order_by('-is_important', 'pub_date')
     else:
-        notes = notes.order_by('-pub_date') 
+        notes = notes.order_by( '-is_important', '-pub_date') 
+
 
     context = {
         'latest_note_list': notes,
@@ -51,11 +53,19 @@ def add_note(request):
         title = request.POST.get('title')
         content = request.POST.get('content')
         is_public = 'is_public' in request.POST
+        is_important = 'is_important' in request.POST and request.user.type == 'SUPERUSER'
 
         if not title or not content:
             return HttpResponse("Title and content are required.", status=400)
-
-        Note.objects.create(user=request.user, title=title, content=content, is_public=is_public)
+        
+        note = Note.objects.create(user=request.user, 
+                            title=title, 
+                            content=content, 
+                            is_public=is_public, 
+                            is_important=is_important)
+        
+        if not is_public:
+            return redirect('notes:lock_note', note_id=note.id)
 
         return redirect('notes:index') 
 
@@ -79,3 +89,82 @@ def add_comment(request, note_id):
     return redirect('notes:detail', note_id=note.id)
 
 
+@login_required
+def mark_note_important(request, note_id):
+    note = get_object_or_404(Note, pk=note_id, user=request.user)
+
+    if request.user.type == 'SUPERUSER': 
+        note.is_important = not note.is_important
+        note.save()
+
+        return redirect('accounts:profile', user_id =request.user.id)  
+    return HttpResponse("You do not have permission to mark this note.", status=403)
+
+@login_required
+def edit_note(request, note_id):
+    note = get_object_or_404(Note, id=note_id)
+
+    if note.user != request.user:
+        return redirect('notes:index')  
+
+    if request.method == 'POST':
+        form = NoteForm(request.POST, instance=note)
+
+        password = request.POST.get('password')
+        if password: 
+            note.password = password  
+            note.is_locked = True  
+            note.save()
+
+        if form.is_valid():
+            form.save()
+            return redirect('accounts:profile', user_id=request.user.id)  
+    else:
+        form = NoteForm(instance=note)
+
+    return render(request, 'notes/edit_note.html', {'form': form, 'note': note})
+
+
+@user_passes_test(lambda u: u.is_authenticated and u.type == 'SUPERUSER')
+def lock_note(request, note_id):
+    note = get_object_or_404(Note, pk=note_id)
+
+    if note.user == request.user:
+        if request.method == "POST":
+            password = request.POST.get('password')
+            if password:
+                note.password = password
+                note.is_locked = True
+                note.save()
+                return redirect('notes:locked_notes', user_id=request.user.id)  
+        return render(request, 'notes/lock_note.html', {'note': note})
+    return HttpResponse("You do not have permission to lock this note.", status=403)
+
+
+def view_locked_note(request, note_id):
+    note = get_object_or_404(Note, pk=note_id)
+
+    if note.password:
+        if request.method == "POST":
+            password = request.POST.get('password')
+            if password == note.password:
+                return render(request, 'notes/detail.html', {'note': note})
+            else:
+                return HttpResponse("Incorrect password.", status=403)
+
+        return render(request, 'notes/enter_password.html', {'note': note})
+    else:
+       return render(request, 'notes/detail.html', {'note': note})
+
+
+def locked_notes(request, user_id):
+    if request.user.id != user_id:
+        return HttpResponse("You do not have permission to view these notes.", status=403)
+    
+    locked_notes = Note.objects.filter(user=request.user, is_locked=True)
+
+    context = {
+        'locked_notes': locked_notes
+    }
+
+    return render(request, 'notes/locked_notes.html', context)

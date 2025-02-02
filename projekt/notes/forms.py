@@ -21,6 +21,12 @@ class UserForm(UserCreationForm):
         if CustomUser.objects.filter(username=username).exists():
             raise forms.ValidationError('This username is already taken.')
         return username
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if CustomUser.objects.filter(email=email).exists():
+            raise forms.ValidationError('This email is already taken.')
+        return email
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -49,7 +55,7 @@ class AuthenticationForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
-        username = cleaned_data.get("email")
+        email = cleaned_data.get("email")
         password = cleaned_data.get("password")
         
         if email and password:
@@ -64,3 +70,9 @@ class PrivateNoteForm(forms.ModelForm):
     class Meta:
         model = PrivateNoteModel
         fields = ['content']
+
+
+class NoteForm(forms.ModelForm):
+    class Meta:
+        model = Note
+        fields = ['title', 'content', 'is_public', 'is_important']

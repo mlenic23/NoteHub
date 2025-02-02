@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="container">
-        <h1 class="mb-5 mt-5">{{ profile_user.name }}'s notes</h1>
+        <h1 class="mb-5 mt-5">{{ profile_user.username }}'s notes</h1>
 
 
     <div class="row">
@@ -14,7 +14,24 @@
             <div class="card-body m-2">
               <h4>{{ note.title }}</h4>
               <p>{{ note.content }}</p>
-              <p><small>Created on {{ note.created_at }}</small></p>
+              <p><small>Created on: {{ note.pub_date }}</small></p>
+
+              {% if user.is_authenticated and user.type == 'SUPERUSER' %}
+                  {% if note.user == user %}
+                      <a href="{% url 'notes:edit_note' note.id %}" class="btn btn-primary">Edit</a>
+                  {% endif %}
+
+                  <form method="POST" action="{% url 'notes:mark_note_important' note.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-warning">
+                          {% if note.is_important %}
+                              Unmark as important
+                          {% else %}
+                              Mark as important
+                          {% endif %}
+                        </button>
+                  </form>
+              {% endif %}
             </div>
           </div>
         {% empty %}
@@ -23,22 +40,5 @@
       </div>
     </div>
 
-           <!-- Private Notes -->
-  <div class="row">
-    <div class="col-md-12">
-      <h2 class="mt-5 mb-4 text-center">Private Notes</h2>
-      {% for note in private_notes %}
-        <div class="card my-4 shadow-sm p-3 mb-5">
-          <div class="card-body m-2">
-            <h4>{{ note.title }}</h4>
-            <p>{{ note.content }}</p>
-            <p><small>Created on {{ note.created_at }}</small></p>
-          </div>
-        </div>
-      {% empty %}
-        <p class="text-center">No private notes available.</p>
-      {% endfor %}
-    </div>
-  </div>
 
   {% endblock content %}

@@ -1,0 +1,17 @@
+{% extends 'notes/base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h2>Lock Note</h2>
+        <p>Enter a password to lock this note. Once locked, you will need the password to access it.</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-danger">Lock Note</button>
+        </form>
+    </div>
+{% endblock %}

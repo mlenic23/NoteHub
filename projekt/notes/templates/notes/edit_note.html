@@ -1,0 +1,31 @@
+{% extends 'notes/base.html' %}
+
+{% block content %}
+  <h2>Edit Note: {{ note.title }}</h2>
+
+  <form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="title">Title:</label>
+        <input type="text" name="title" id="title" class="form-control" value="{{ form.title.value }}">
+    </div>
+
+    <div class="form-group">
+        <label for="content">Content:</label>
+        <textarea name="content" id="content" class="form-control">{{ form.content.value }}</textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="is_public">Public:</label>
+        <input type="checkbox" name="is_public" id="is_public" {% if form.is_public.value %}checked{% endif %}>
+    </div>
+
+    <div class="form-group">
+        <label for="is_important">Important:</label>
+        <input type="checkbox" name="is_important" id="is_important" {% if form.is_important.value %}checked{% endif %}>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+  </form>
+  
+{% endblock %}

@@ -24,6 +24,17 @@
       </div>
 
       <div class="form-group">
+        <label for="id_email">Email</label>
+        {{ user_form.email }}
+        {% for error in user_form.email.errors %}
+          <span class="error">{{ error }}</span>
+        {% endfor %}
+      </div>
+
+      <label for="id_name">Ime računa:</label>
+      <input type="text" name="name" id="id_name" required>
+
+      <div class="form-group">
         <label for="id_password1">Password</label>
         {{ user_form.password1 }}
         {% for error in user_form.password1.errors %}

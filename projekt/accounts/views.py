@@ -19,6 +19,7 @@ def register(request):
             user = user_form.save(commit=False)
             user.set_password(user_form.cleaned_data['password1'])
             user.email = user_form.cleaned_data['email']
+            user.username = user_form.cleaned_data['username']
 
             user_type = request.POST.get('type', 'REGULARUSER')
             user.type = user_type
@@ -32,6 +33,7 @@ def register(request):
             messages.success(request, "Registration successful. Welcome!")
             return redirect('accounts:login')
         else:
+            print(user_form.errors, account_form.errors)
             messages.error(request, "Registration failed. Please correct the errors below.")
             
     else:
@@ -53,11 +55,9 @@ def profile(request, user_id):
 
     notes = Note.objects.filter(user=user)
 
-    private_notes = []
-    for note in notes:
-        private_notes.extend(note.private_notes.all())
-
-    public_notes = notes.filter(is_public=True)
+    notes = Note.objects.filter(user=user)
+    public_notes = notes.filter(is_public=True).order_by('-pub_date')
+    private_notes = notes.filter(password__isnull=False).order_by('-pub_date')  
 
     context = {
         'profile_user': user,

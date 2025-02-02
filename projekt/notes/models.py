@@ -21,6 +21,9 @@ class Note(models.Model):
     likes = models.PositiveIntegerField(default=0)
     private_notes = models.ManyToManyField(PrivateNoteModel, blank=True)
     is_public = models.BooleanField(default=True)
+    is_important = models.BooleanField(default=False)
+    is_locked = models.BooleanField(default=False)
+    password = models.CharField(max_length=100, null=True, blank=True)
     
 
     def __str__(self):
