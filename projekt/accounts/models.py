@@ -13,6 +13,8 @@ class CustomUser(AbstractUser):
         max_length=20, choices=Types.choices, default=Types.ADMIN
     )
 
+    theme = models.CharField(max_length=10, choices=[("light", "Light"), ("dark", "Dark")], default="light")
+
     email = models.EmailField(unique=True, max_length=50)
     username = models.CharField(unique=True, max_length=20)
 
@@ -23,3 +25,6 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return f"{self.email} - {self.get_type_display()}"
+    
+    def is_regular_user(self):
+        return self.type == self.Types.REGULARUSER

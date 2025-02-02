@@ -4,7 +4,8 @@ from .models import Note, Comment
 from accounts.models import CustomUser
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import NoteForm  
-
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
@@ -168,3 +169,15 @@ def locked_notes(request, user_id):
     }
 
     return render(request, 'notes/locked_notes.html', context)
+
+
+@login_required
+def toggle_theme(request):
+    if request.method == 'POST':
+        if request.user.is_regular_user():
+            if request.session.get('theme') == 'dark':
+                request.session['theme'] = 'light'
+            else:
+                request.session['theme'] = 'dark'
+
+    return redirect('notes:index')  

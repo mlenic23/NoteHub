@@ -25,7 +25,7 @@ nav a {
     color: white;
     text-decoration: none;
     margin: 0 15px;
-    font-size: 18px;
+    font-size: 17px;
 }
 
 nav a:hover {
@@ -40,6 +40,7 @@ nav a:hover {
 .nav-right {
     display: flex;
     gap: 15px;
+    align-items: center;
 }
 
 .container {
@@ -90,7 +91,7 @@ h1, h2 {
 
 label {
     display: block;
-    color: #2c3e50; 
+    color: #6aa7eb; 
     font-weight: bold;
     margin-bottom: 5px;
 }
@@ -284,6 +285,17 @@ a:hover {
     background-color: #2980b9;
 }
 
+.switchform{
+    background-color: none;
+    border: none;
+    border-radius: none;
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    max-width: 0px;
+    margin-right:205px;
+}
+
 .sort-form select {
     padding: 8px 12px;
     background-color: #3498db;
@@ -298,3 +310,130 @@ a:hover {
 .sort-form select:hover {
     background-color: #2980b9;
 }
+
+body.light {
+    background-color: white;
+    color: black;
+}
+
+body.dark {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+.dark nav {
+    background-color: #1e1e1e;
+}
+
+.dark nav a {
+    color: #bbbbbb;
+    font-size: 17px;
+}
+
+.dark nav a:hover {
+    color: white;
+}
+
+.dark .notes-container {
+    background-color: #242424;
+    color: #e0e0e0;
+}
+
+.dark .card {
+    background-color: #2a2a2a;
+    border-color: #444;
+}
+
+.dark .card-title {
+    color: #61dafb;
+}
+
+.dark .card-text {
+    color: #a0a0a0;
+}
+
+.dark button {
+    background-color: #007acc;
+    color: white;
+}
+
+.dark button:hover {
+    background-color: #005f99;
+}
+
+.dark form {
+    background-color: #242424;
+    border-color: #444;
+}
+
+.dark input, 
+.dark textarea {
+    background-color: #333;
+    border: 1px solid #555;
+    color: #e0e0e0;
+}
+
+.dark input:focus, 
+.dark textarea:focus {
+    border-color: #007acc;
+}
+
+.dark a {
+    color: #61dafb;
+}
+
+.dark a:hover {
+    color: #0096ff;
+}
+
+.dark .note {
+    background-color: #1e1e1e;
+    border-color: #444;
+}
+
+.dark .note h3 {
+    color: #61dafb;
+}
+
+.dark .note p {
+    color: #bbbbbb;
+}
+
+.like{
+    background-color: none;
+    border: none;
+    border-radius: none;
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    max-width: 0px;
+    padding-bottom:20px;
+}
+
+.switch{
+    background-color: #3498db; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width:200px;
+    font-size: 17px;
+}
+
+.switch:hover {
+    color: #ddd;
+}
+
+.dark .switch{
+        background-color: #1e1e1e; 
+        color: #bbbbbb;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        width:200px;
+        font-size: 17px;
+    }

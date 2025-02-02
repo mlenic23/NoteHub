@@ -19,6 +19,7 @@ urlpatterns = [
     path('lock/<int:note_id>/', views.lock_note, name='lock_note'),  
     path('locked_notes/<int:user_id>/', views.locked_notes, name='locked_notes'), 
     path('view_locked/<int:note_id>/', views.view_locked_note, name='view_locked_note'),  
+    path('toggle-theme/', views.toggle_theme, name="toggle_theme"),
 ]
 
 
