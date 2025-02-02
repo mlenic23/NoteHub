@@ -5,7 +5,10 @@ from django.utils import timezone
 from django.db.models import Q
 from accounts.models import CustomUser
 
+
+
 class PrivateNoteModel(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="private_notes")
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -25,6 +28,8 @@ class Note(models.Model):
     is_locked = models.BooleanField(default=False)
     password = models.CharField(max_length=100, null=True, blank=True)
     completed = models.BooleanField(default=False)
+    is_private = models.BooleanField(default=False)
+
     
 
     def __str__(self):

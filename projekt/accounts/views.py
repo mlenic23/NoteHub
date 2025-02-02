@@ -57,7 +57,11 @@ def profile(request, user_id):
 
     notes = Note.objects.filter(user=user)
     public_notes = notes.filter(is_public=True).order_by('-pub_date')
-    private_notes = notes.filter(password__isnull=False).order_by('-pub_date')  
+
+    if request.user == user:
+        private_notes = notes.filter(is_private=True).order_by('-pub_date')  
+    else:
+        private_notes = None 
 
     context = {
         'profile_user': user,

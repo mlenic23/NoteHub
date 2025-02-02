@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
-from .models import Note, Comment
+from .models import Note, Comment, PrivateNoteModel
 from accounts.models import CustomUser
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import NoteForm  
@@ -16,6 +16,9 @@ def index(request):
         notes = Note.objects.filter(title__icontains=search_query, is_public= True)
     else:
         notes = Note.objects.filter(is_public = True)
+
+    if request.user.is_authenticated:
+         notes = notes | Note.objects.filter(user=request.user, is_private=True)
 
     if order == 'asc':
         notes = notes.order_by('-is_important', 'pub_date')
@@ -48,6 +51,11 @@ def like(request, note_id):
     note.save()  
     return redirect("notes:detail", note_id=note_id) 
 
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from .models import Note, PrivateNoteModel
+
 @login_required
 def add_note(request):
     if request.method == 'POST':
@@ -55,22 +63,24 @@ def add_note(request):
         content = request.POST.get('content')
         is_public = 'is_public' in request.POST
         is_important = 'is_important' in request.POST and request.user.type == 'SUPERUSER'
+        is_private = "is_private" in request.POST
 
         if not title or not content:
             return HttpResponse("Title and content are required.", status=400)
         
-        note = Note.objects.create(user=request.user, 
-                            title=title, 
-                            content=content, 
-                            is_public=is_public, 
-                            is_important=is_important)
+        note = Note.objects.create(
+            user=request.user, 
+            title=title, 
+            content=content, 
+            is_public=is_public, 
+            is_important=is_important,
+            is_private=is_private
+        )
         
-        if not is_public:
-            return redirect('notes:lock_note', note_id=note.id)
-
-        return redirect('notes:index') 
+        return redirect("notes:index")
 
     return render(request, 'notes/add_note.html')
+
 
 
 def delete_note(request, note_id):
@@ -207,3 +217,14 @@ def edit_note(request, note_id):
         return redirect('notes:index')  
 
     return render(request, 'notes/edit_note.html', {'note': note})
+
+@login_required
+def profile(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
+
+    if request.user == user:
+        notes = Note.objects.filter(user=user)
+    else:
+        notes = Note.objects.filter(user=user, is_public=True)
+
+    return render(request, 'accounts/profile.html', {'profile_user': user, 'notes': notes})
