@@ -20,6 +20,8 @@ urlpatterns = [
     path('locked_notes/<int:user_id>/', views.locked_notes, name='locked_notes'), 
     path('view_locked/<int:note_id>/', views.view_locked_note, name='view_locked_note'),  
     path('toggle-theme/', views.toggle_theme, name="toggle_theme"),
+    path('<int:note_id>/toggle_completed/', views.toggle_completed, name='toggle_completed'),
+    path('<int:note_id>/edit/', views.edit_note, name='edit_note'),
 ]
 
 

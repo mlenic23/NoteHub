@@ -12,6 +12,25 @@
         <button type="submit">Like</button>
     </form>
 
+    {% if user.is_authenticated and user.type == "REGULARUSER" %}
+            {% if note.completed %}
+                <p>This note is completed and cannot be edited.</p>
+            {% else %}
+                <form method="post" class='completed' action="{% url 'notes:toggle_completed' note.id %}" class="completed-form">
+                    {% csrf_token %}
+                    <form method="post" action="{% url 'notes:toggle_completed' note.id %}">
+                        {% csrf_token %}
+                        <button class="buttonCompleted" type="submit" class="btn btn-success">Mark as Completed</button>
+                    </form>
+                </form>
+                
+                <form action="{% url 'notes:edit_note' note.id %}" class="edit" method="get" style="display: inline;">
+                    <button type="submit" class="btn btn-warning">Edit</button>
+                </form>
+                
+            {% endif %}
+    {% endif %}
+
     <h2>Comments</h2>
     {% for comment in comments %}
         <p>{{comment.text}} ({{comment.created_at}})</p>
@@ -25,6 +44,7 @@
         <textarea name="comment_text" rows="4" cols="50" placeholder="Write a comment..."></textarea><br>
         <button type="submit">Submit</button>
     </form>
+
     
     <a href="{% url 'notes:index' %}">Back to Notes</a>
 {% endblock %}

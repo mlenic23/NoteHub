@@ -436,4 +436,31 @@ body.dark {
         cursor: pointer;
         width:200px;
         font-size: 17px;
-    }
+}
+
+.completed{
+    background-color: none;
+    border: none;
+    border-radius: none;
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    max-width: 0px;
+    padding-bottom:20px;
+
+}
+
+.buttonCompleted{
+    width: 200px;
+}
+
+.edit{
+    background-color: none;
+    border: none;
+    border-radius: none;
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    max-width: 0px;
+
+}

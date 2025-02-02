@@ -181,3 +181,29 @@ def toggle_theme(request):
                 request.session['theme'] = 'dark'
 
     return redirect('notes:index')  
+
+
+@login_required
+def toggle_completed(request, note_id):
+    note = Note.objects.get(id=note_id)
+    
+    if note.user == request.user and request.user.type == "REGULARUSER":
+        note.completed = not note.completed 
+        note.save()
+
+    return redirect('notes:index')
+
+@login_required
+def edit_note(request, note_id):
+    note = get_object_or_404(Note, id=note_id)
+
+    if note.user != request.user or note.completed:
+        return redirect('notes:index') 
+
+    if request.method == 'POST':
+        note.title = request.POST.get('title')
+        note.content = request.POST.get('content')
+        note.save()
+        return redirect('notes:index')  
+
+    return render(request, 'notes/edit_note.html', {'note': note})

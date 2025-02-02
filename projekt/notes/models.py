@@ -24,6 +24,7 @@ class Note(models.Model):
     is_important = models.BooleanField(default=False)
     is_locked = models.BooleanField(default=False)
     password = models.CharField(max_length=100, null=True, blank=True)
+    completed = models.BooleanField(default=False)
     
 
     def __str__(self):
