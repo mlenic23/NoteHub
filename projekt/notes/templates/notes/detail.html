@@ -4,9 +4,6 @@
 
 {% block content %}
     <h2>{{ note.title }}</h2>
-    {% if user.is_authenticated and user.type == "SUPERUSER" %}
-        <p><strong>Role:</strong> {{ note.get_role_display }}</p>
-    {% endif %}
     <p>{{ note.content }}</p>
     <p>Published: {{ note.pub_date }}</p>
 
@@ -14,21 +11,6 @@
         {% csrf_token %}
         <button type="submit">Like</button>
     </form>
-
-    {% if user.is_authenticated and user.type == "REGULARUSER" %}
-            {% if note.completed %}
-                <p>This note is completed and cannot be edited.</p>
-            {% else %}
-                <form method="post" class='completed' action="{% url 'notes:toggle_completed' note.id %}" class="completed-form">
-                    {% csrf_token %}
-                    <form method="post" action="{% url 'notes:toggle_completed' note.id %}">
-                        {% csrf_token %}
-                        <button class="buttonCompleted" type="submit" class="btn btn-success">Mark as Completed</button>
-                    </form>
-                </form>
-                
-            {% endif %}
-    {% endif %}
 
     <h2>Comments</h2>
     {% for comment in comments %}

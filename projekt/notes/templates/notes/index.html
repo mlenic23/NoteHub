@@ -22,11 +22,6 @@
         {% for note in latest_note_list %}
         <div class="note">
             <h3><a href="{% url 'notes:detail' note.id %}">{{ note.title }}</a></h3>
-            {% if note.user.type == 'SUPERUSER' %}
-                {% if note.role %}
-                    <p><strong>Role:</strong> {{ note.get_role_display }}</p>  
-                {% endif %}
-            {% endif %}
             <p>{{ note.content }}</p>
 
             <p><strong>Likes:</strong> {{ note.likes }}</p>

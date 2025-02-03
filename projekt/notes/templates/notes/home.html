@@ -1,6 +1,21 @@
 {% extends "notes/base.html" %}
+{% load static %}
 
 {% block content %}
-    <h1>Welcome to NoteHub</h1>
-    <p>Organize your notes easily.</p>
+<div class="centered-container">
+    <div class="centered-content">
+        <div class="centered-title-container">
+            <h2 class="centered-title">
+                {% if request.session.theme == 'dark' %}
+                    <img src="{% static 'images/darklogo.png' %}" alt="Dark App Icon" class="app-icon">
+                {% else %}
+                    <img src="{% static 'images/lightlogo.png' %}" alt="Light App Icon" class="app-icon">
+                {% endif %}
+            </h2>
+        </div>
+        <h1 class="welcome">Welcome to NoteHub</h1>
+        <p class="organizeNotes">Organize your notes easily.</p>
+    </div>
+</div>
 {% endblock %}
+

@@ -16,24 +16,16 @@
                       <p>{{ note.content }}</p>
                       <p><small>Created on: {{ note.pub_date }}</small></p>
 
-                      {% if user.is_authenticated and user.type == 'REGULARUSER' %}
-                          {% if note.completed %}
-                              <p>This note is completed and cannot be edited.</p>
-                          {% else %}
-                              <form action="{% url 'notes:edit_note' note.id %}" class="edit" method="get" style="display: inline;">
-                                  <button type="submit" class="btn btn-warning">Edit</button>
-                              </form>
-                          {% endif %}
-                      {% endif %}
-
                       {% if user.is_authenticated and user.type == 'SUPERUSER' %}
                           {% if note.user == user %}
-                              <a href="{% url 'notes:edit_note' note.id %}" class="btn btn-primary">Edit</a>
+                          <form action="{% url 'notes:edit_note' note.id %}" class="edit" method="get" style="display: inline;">
+                            <button type="submit" class="btn btn-warning">Edit</button>
+                          </form>
                           {% endif %}
 
-                          <form method="POST" action="{% url 'notes:mark_note_important' note.id %}">
+                          <form method="POST" class="switchform" action="{% url 'notes:mark_note_important' note.id %}">
                               {% csrf_token %}
-                              <button type="submit" class="btn btn-warning">
+                              <button type="submit" class="buttonCompleted">
                                   {% if note.is_important %}
                                       Unmark as important
                                   {% else %}
@@ -42,6 +34,25 @@
                               </button>
                           </form>
                       {% endif %}
+
+                      {% if user.is_authenticated and user.type == "REGULARUSER" %}
+                        {% if note.completed %}
+                            <p>This note is completed and cannot be edited.</p>
+                        {% else %}
+                            <form method="post" class='completed' action="{% url 'notes:toggle_completed' note.id %}" class="completed-form">
+                                {% csrf_token %}
+                            <form method="post" action="{% url 'notes:toggle_completed' note.id %}">
+                                    {% csrf_token %}
+                            <button class="buttonCompleted" type="submit" class="btn btn-success">Mark as Completed</button>
+                            </form>
+                            </form>
+                            
+                            <form action="{% url 'notes:edit_note' note.id %}" class="edit" method="get" style="display: inline;">
+                                <button type="submit" class="btn btn-warning">Edit</button>
+                            </form>
+                
+                        {% endif %}
+                     {% endif %}
                   </div>
               </div>
           {% empty %}
@@ -63,12 +74,21 @@
                         <h4>{{ note.title }}</h4>
                         <p>{{ note.content }}</p>
                         <p><small>Created on: {{ note.pub_date }}</small></p>
-                        {% if note.completed %}
-                          <p>This note is completed and cannot be edited.</p>
+                          {% if note.completed %}
+                            <p>This note is completed and cannot be edited.</p>
                         {% else %}
-                          <form action="{% url 'notes:edit_note' note.id %}" class="edit" method="get" style="display: inline;">
-                              <button type="submit" class="btn btn-warning">Edit</button>
-                          </form>
+                            <form method="post" class='completed' action="{% url 'notes:toggle_completed' note.id %}" class="completed-form">
+                                {% csrf_token %}
+                            <form method="post" action="{% url 'notes:toggle_completed' note.id %}">
+                                    {% csrf_token %}
+                            <button class="buttonCompleted" type="submit" class="btn btn-success">Mark as Completed</button>
+                            </form>
+                            </form>
+                            
+                            <form action="{% url 'notes:edit_note' note.id %}" class="edit" method="get" style="display: inline;">
+                                <button type="submit" class="btn btn-warning">Edit</button>
+                            </form>
+                
                         {% endif %}
                     </div>
                 </div>

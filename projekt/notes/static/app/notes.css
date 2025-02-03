@@ -1,5 +1,5 @@
 body {
-    background-color: white; 
+    background: linear-gradient(to bottom, white, #b3e5fc); 
     color: #2c3e50;
     font-family: Arial, sans-serif; 
     margin: 0;
@@ -7,7 +7,7 @@ body {
 }
 
 .notes-container {
-    background-color: #e0f7fa; 
+    background-color: #dbf3fd; 
     padding: 20px;
     border-radius: 10px;
     margin-top: 30px;
@@ -54,6 +54,26 @@ h1, h2 {
     font-weight: bold;
 }
 
+.welcome {
+    padding-top: 0px;
+    margin-top: 0px;
+    text-align: center;
+    text-decoration: underline;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.organizeNotes{
+    text-align: center;
+    font-style: italic;
+    color:#005f99;
+}
+
+.dark .organizeNotes{
+    text-align: center;
+    font-style: italic;
+    color:#97deff;
+}
+
 .card {
     background-color: #ffffff; 
     border: 1px solid #bdc3c7;
@@ -63,12 +83,12 @@ h1, h2 {
 }
 
 .card-body {
-    padding: 15px;
+    padding: 10px;
 }
 
 .card-title {
     color: #3498db; 
-    font-size: 20px;
+    font-size: 10px;
 }
 
 .card-text {
@@ -312,12 +332,12 @@ a:hover {
 }
 
 body.light {
-    background-color: white;
+    background: linear-gradient(to right, #97deff, white);
     color: black;
 }
 
 body.dark {
-    background-color: #121212;
+    background: linear-gradient(to right, #0a3d62, #121212);
     color: #e0e0e0;
 }
 
@@ -490,3 +510,39 @@ body.dark {
     border-color: #2980b9; 
     outline: none; 
 }
+
+.centered-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;     
+    min-height: 100vh;      
+    text-align: center;     
+}
+
+
+.centered-content {
+    text-align: center; 
+}
+
+.app-icon {
+    width: 80px;  
+    height: 80px;
+    margin-bottom: 10px;
+}
+
+.centered-title {
+    font-size: 36px;  
+    margin: 20px 0;
+}
+
+.welcome {
+    font-size: 28px;
+    margin: 10px 0;
+}
+
+.organizeNotes {
+    font-size: 20px;
+    color: gray;
+}
+
+
