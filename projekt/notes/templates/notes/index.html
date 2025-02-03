@@ -21,6 +21,18 @@
     <div class="notes-container">
         {% for note in latest_note_list %}
         <div class="note">
+            {% if user.is_staff %} 
+                {% if not note.approved %}
+                    <a href="{% url 'accounts:approve_note' note.id %}" class="approve-button">Approve Note</a>
+                {% else %}
+                    <p class="approved-message"><em>This note has been approved by the administrator.</em><br>
+                                                <strong>Community guidelines are in place.</strong></p>
+                    
+                    <a href="{% url 'accounts:unapprove_note' note.id %}" class="unapprove-button">Unapprove Note</a>
+                {% endif %}
+            {% endif %}
+
+
             <h3><a href="{% url 'notes:detail' note.id %}">{{ note.title }}</a></h3>
             <p>{{ note.content }}</p>
 

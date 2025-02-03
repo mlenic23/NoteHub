@@ -39,6 +39,7 @@ class Note(models.Model):
     completed = models.BooleanField(default=False)
     is_private = models.BooleanField(default=False)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, blank=True, null=True)
+    approved = models.BooleanField(default=False)
     
 
     def __str__(self):

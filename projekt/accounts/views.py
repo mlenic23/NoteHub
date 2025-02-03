@@ -117,3 +117,35 @@ def delete_user(request, user_id):
 
     user_to_delete.delete()
     return redirect('accounts:user_list') 
+
+########################
+@login_required
+@user_passes_test(is_admin)  # Only admins can access this
+def approve_note(request, note_id):
+    note = get_object_or_404(Note, id=note_id)
+
+    # Mark the note as approved
+    note.approved = True
+    note.save()
+
+    # Show a success message
+    messages.success(request, f"Note '{note.title}' has been approved.")
+    
+    # Redirect to the note list or wherever you need to show approved notes
+    return redirect('notes:index')
+
+
+@login_required
+@user_passes_test(is_admin)  # Only admins can access this
+def unapprove_note(request, note_id):
+    note = get_object_or_404(Note, pk=note_id)
+    
+    if note.approved:
+        note.approved = False
+        note.save()
+        
+        # Show a success message
+        messages.success(request, f"Note '{note.title}' has been unapproved.")
+    
+    # Redirect after un-approving
+    return redirect('notes:index')
