@@ -545,3 +545,86 @@ body.dark {
     color: gray;
 }
 
+
+.heading {
+    text-align: center;
+    margin-bottom: 16px;
+    font-size: 24px;
+}
+
+.table-container {
+    margin-top: 20px;
+    margin-bottom: 40px;
+    overflow-x: auto;
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: separate; 
+    border-spacing: 15px; 
+    margin: 0 auto;
+}
+
+.table-header {
+    padding: 10px 15px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #f4f4f4;
+    font-weight: bold;
+    border: 1px solid #ddd;
+}
+
+.user-row {
+    border-bottom: 1px solid #ddd;
+}
+
+.user-cell {
+    padding: 15px 25px; 
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+    background-color: #fff; 
+}
+
+.user-actions {
+    text-align: center;
+}
+
+.delete-form {
+    display: inline;
+}
+
+.delete-button {
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #ff4747; 
+    color: white;
+    border: none; 
+    border-radius: 4px;
+    outline: none; 
+    transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: #d53f3f;
+}
+
+.delete-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.delete-button, .delete-button:focus {
+    background-color: #ff4747;
+    box-shadow: none;
+}
+
+.delete-button:focus {
+    outline: none; 
+}
+
+.no-delete {
+    font-style: italic;
+    color: #888;
+}

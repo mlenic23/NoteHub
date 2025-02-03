@@ -8,6 +8,7 @@ from notes.forms import UserForm, AccountForm, AuthenticationForm
 from django.contrib import messages
 from accounts.models import CustomUser
 from notes.forms import PrivateNoteForm
+from django.contrib.auth.decorators import login_required, user_passes_test
 # Create your views here.
 
 def register(request):
@@ -93,3 +94,26 @@ def login(request):
         form = AuthenticationForm()
 
     return render(request, 'accounts/login.html', {'form': form})
+
+def is_admin(user): #prvo vidi jel lik admin
+    return user.is_authenticated and user.type == CustomUser.Types.ADMIN
+
+@login_required
+@user_passes_test(is_admin)
+def user_list(request):
+    users = CustomUser.objects.exclude(type=CustomUser.Types.ADMIN)  #prikazi sve usere ali ne i admina
+    return render(request, 'accounts/user_list.html', {'users': users})
+
+@login_required
+@user_passes_test(is_admin)
+def delete_user(request, user_id):
+    user_to_delete = get_object_or_404(CustomUser, id=user_id)
+
+    if user_to_delete.type == CustomUser.Types.ADMIN:
+        return HttpResponse("You cannot delete another Admin.", status=403)
+    
+    if user_to_delete == request.user:
+        return HttpResponse("You cannot delete your own account.", status=403)
+
+    user_to_delete.delete()
+    return redirect('accounts:user_list') 

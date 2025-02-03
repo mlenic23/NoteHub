@@ -5,7 +5,7 @@ from accounts.models import CustomUser
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import NoteForm  
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from accounts.views import is_admin
 
 
 def index(request):
@@ -222,3 +222,4 @@ def profile(request, user_id):
         notes = Note.objects.filter(user=user, is_public=True)
 
     return render(request, 'accounts/profile.html', {'profile_user': user, 'notes': notes})
+

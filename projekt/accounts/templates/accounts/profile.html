@@ -99,6 +99,20 @@
     </div>
     {% endif %}
   {% endif %}
+  {% if user.is_authenticated and user.type == 'ADMIN' %}
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h2 class="mt-5 mb-4 text-center">Admin Panel</h2>
+            <p>Welcome, {{ user.username }}! Here you can manage users and perform administrative tasks.</p>
+            
+            <a href="{% url 'accounts:user_list' %}" class="btn btn-primary">View All Users</a>
 
+            <hr>
+
+            <h4>Admin-specific Actions</h4>
+            <p>You have full access to the user management system.</p>
+        </div>
+    </div>
+    {% endif %}
 
   {% endblock content %}

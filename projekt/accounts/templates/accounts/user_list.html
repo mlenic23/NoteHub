@@ -1,0 +1,40 @@
+{% extends 'notes/base.html' %}
+
+{% block content %}
+<h2 class="text-center mb-4 heading">Lista korisnika</h2>
+
+<div class="table-container">
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th class="table-header">ID</th>
+                <th class="table-header">Korisničko ime</th>
+                <th class="table-header">Email</th>
+                <th class="table-header">Tip korisnika</th>
+                <th class="table-header">Akcije</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr class="user-row">
+                    <td class="user-cell">{{ user.id }}</td>
+                    <td class="user-cell">{{ user.username }}</td>
+                    <td class="user-cell">{{ user.email }}</td>
+                    <td class="user-cell">{{ user.get_type_display }}</td>
+                    <td class="user-actions">
+                        {% if user != request.user and user.type != 'ADMIN' %}
+                            <form action="{% url 'accounts:delete_user' user.id %}" method="post" class="delete-form">
+                                {% csrf_token %}
+                                <button type="submit" class="delete-button" onclick="return confirm('Jeste li sigurni da želite obrisati ovog korisnika?');">Obriši</button>
+                            </form>
+                        {% else %}
+                            <em class="no-delete">Ne može se obrisati</em>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
