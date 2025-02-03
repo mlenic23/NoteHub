@@ -64,6 +64,13 @@ def add_note(request):
         is_public = 'is_public' in request.POST
         is_important = 'is_important' in request.POST and request.user.type == 'SUPERUSER'
         is_private = "is_private" in request.POST
+        role = request.POST.get('role') if request.user.type == 'SUPERUSER' else None
+
+        if request.user.type == 'SUPERUSER' and not is_public:
+            is_private = True
+            is_locked = True  
+        else:
+            is_locked = False
 
         if not title or not content:
             return HttpResponse("Title and content are required.", status=400)
@@ -74,12 +81,17 @@ def add_note(request):
             content=content, 
             is_public=is_public, 
             is_important=is_important,
-            is_private=is_private
+            is_locked=is_locked,
+            is_private=is_private,
+            role=role
         )
+
+        if is_locked:
+            return redirect('notes:lock_note', note_id=note.id)
         
         return redirect("notes:index")
 
-    return render(request, 'notes/add_note.html')
+    return render(request, 'notes/add_note.html', {'role_choices': Note.ROLE_CHOICES})
 
 
 
@@ -121,15 +133,14 @@ def edit_note(request, note_id):
     if request.method == 'POST':
         form = NoteForm(request.POST, instance=note)
 
-        password = request.POST.get('password')
-        if password: 
-            note.password = password  
-            note.is_locked = True  
-            note.save()
-
         if form.is_valid():
-            form.save()
-            return redirect('accounts:profile', user_id=request.user.id)  
+            note = form.save(commit=False)
+            note.title = request.POST.get('title')
+            note.content = request.POST.get('content')
+        
+        note.save()
+        return redirect('accounts:profile', user_id=request.user.id)  
+    
     else:
         form = NoteForm(instance=note)
 

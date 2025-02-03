@@ -46,7 +46,7 @@ def profile(request, user_id):
     user = get_object_or_404(CustomUser, pk=user_id)
 
     try:
-        account = user.account  # Ispravno: koristi `user.account`
+        account = user.account  
     except Account.DoesNotExist:
         account = None
 
@@ -56,7 +56,7 @@ def profile(request, user_id):
     notes = Note.objects.filter(user=user)
 
     notes = Note.objects.filter(user=user)
-    public_notes = notes.filter(is_public=True).order_by('-pub_date')
+    public_notes = notes.filter(is_public=True).order_by('-is_important', '-pub_date')
 
     if request.user == user:
         private_notes = notes.filter(is_private=True).order_by('-pub_date')  

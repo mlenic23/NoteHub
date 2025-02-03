@@ -24,8 +24,15 @@
         {% if user.is_authenticated and user.type == 'SUPERUSER' %}
             <label for="is_important">Mark as Important</label>
             <input type="checkbox" id="is_important" name="is_important">
-        {% endif %}
 
+            <label for="role">Role:</label>
+            <select name="role" id="role" class="role-select">
+                {% for choice, display_name in role_choices %}
+                    <option value="{{ choice }}" {% if choice == 'personal' %}selected{% endif %}>{{ display_name }}</option>
+                {% endfor %}
+            </select>
+        {% endif %}
+        <br><br>
         <button type="submit">Save Note</button>
     </form>
     

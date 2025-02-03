@@ -4,6 +4,9 @@
 
 {% block content %}
     <h2>{{ note.title }}</h2>
+    {% if user.is_authenticated and user.type == "SUPERUSER" %}
+        <p><strong>Role:</strong> {{ note.get_role_display }}</p>
+    {% endif %}
     <p>{{ note.content }}</p>
     <p>Published: {{ note.pub_date }}</p>
 

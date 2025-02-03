@@ -75,4 +75,7 @@ class PrivateNoteForm(forms.ModelForm):
 class NoteForm(forms.ModelForm):
     class Meta:
         model = Note
-        fields = ['title', 'content', 'is_public', 'is_important']
+        fields = ['title', 'content', 'is_public', 'is_important', 'role']
+        widgets = {
+            'role': forms.Select(choices=Note.ROLE_CHOICES)
+        }

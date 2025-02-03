@@ -11,7 +11,7 @@
         <div class="search-sort-buttons">
             <button type="submit" class="search-button">Search</button>
 
-            <select name="order" onchange="this.form.submit()"> <!-- Automatski podnosi formu pri promeni -->
+            <select name="order" onchange="this.form.submit()"> 
                 <option value="desc" {% if current_order == 'desc' %}selected{% endif %}>Newest to Oldest</option>
                 <option value="asc" {% if current_order == 'asc' %}selected{% endif %}>Oldest to Newest</option>
             </select>
@@ -22,6 +22,11 @@
         {% for note in latest_note_list %}
         <div class="note">
             <h3><a href="{% url 'notes:detail' note.id %}">{{ note.title }}</a></h3>
+            {% if note.user.type == 'SUPERUSER' %}
+                {% if note.role %}
+                    <p><strong>Role:</strong> {{ note.get_role_display }}</p>  
+                {% endif %}
+            {% endif %}
             <p>{{ note.content }}</p>
 
             <p><strong>Likes:</strong> {{ note.likes }}</p>

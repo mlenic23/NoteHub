@@ -17,6 +17,15 @@ class PrivateNoteModel(models.Model):
 
 
 class Note(models.Model):
+    ROLE_CHOICES = [
+        ('hobbies', 'Hobbies'),
+        ('movies', 'Movies'),
+        ('school', 'School'),
+        ('work', 'Work'),
+        ('music', 'Music'),
+        ('personal', 'Personal'),
+    ]
+
     user = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, null=True, blank=True, related_name='notes')
     title = models.CharField(max_length=200)
     content = models.TextField()
@@ -29,7 +38,7 @@ class Note(models.Model):
     password = models.CharField(max_length=100, null=True, blank=True)
     completed = models.BooleanField(default=False)
     is_private = models.BooleanField(default=False)
-
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, blank=True, null=True)
     
 
     def __str__(self):

@@ -464,3 +464,29 @@ body.dark {
     max-width: 0px;
 
 }
+
+.role-select {
+    background-color: #3498db; 
+    color: white; 
+    font-size: 14px; 
+    padding: 5px 10px; 
+    border: none; 
+    border-radius: 5px; 
+    width: 150px;
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+}
+
+.role-select:hover {
+    background-color: #2980b9; 
+}
+
+.role-select option {
+    background-color: #3498db; 
+    color: white; 
+}
+
+.role-select:focus {
+    border-color: #2980b9; 
+    outline: none; 
+}
