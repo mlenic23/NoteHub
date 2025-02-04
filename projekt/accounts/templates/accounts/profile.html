@@ -3,56 +3,35 @@
 {% block content %}
 
 <div class="container">
-  <h1 class="mb-5 mt-5">{{ profile_user.username }}'s notes</h1>
+  <h1 class="mb-5 mt-5 text-center">{{ profile_user.username }}'s notes</h1>
 
-  <div class="row">
-      <div class="col-md-12">
+  <!-- PUBLIC NOTES -->
+  <div class="row justify-content-center">
+      <div class="col-md-8">
           <h2 class="mt-5 mb-4 text-center">Public Notes</h2>
           {% for note in public_notes %}
-              <div class="card my-4 shadow-sm p-3 mb-5">
-                  <div class="card-body m-2">
-                      <h4>{{ note.title }}</h4>
-                      <p><strong>Role:</strong> {{ note.get_role_display }}</p>
-                      <p>{{ note.content }}</p>
-                      <p><small>Created on: {{ note.pub_date }}</small></p>
+              <div class="card my-4 shadow-sm p-3">
+                  <div class="card-body">
+                      <div class="note {% if note.category == 'business' %} business-note {% elif note.category == 'personal' %} personal-note {% endif %}">
+                          <h4>{{ note.title }}</h4>
+                          {% if user.is_authenticated and user.type == "SUPERUSER" %}
+                          <p><strong>Role:</strong> {{ note.get_role_display }}</p>{% endif %}
+                          <p>{{ note.content }}</p>
+                          <p><small>Created on: {{ note.pub_date }}</small></p>
 
-                      {% if user.is_authenticated and user.type == 'SUPERUSER' %}
-                          {% if note.user == user %}
-                          <form action="{% url 'notes:edit_note' note.id %}" class="edit" method="get" style="display: inline;">
-                            <button type="submit" class="btn btn-warning">Edit</button>
-                          </form>
+                          {% if user.is_authenticated and user.type == "REGULARUSER" %}
+                              {% if note.completed %}
+                                  <p>This note is completed and cannot be edited.</p>
+                              {% else %}
+                                  <form class="completed" method="post" action="{% url 'notes:toggle_completed' note.id %}">
+                                      {% csrf_token %}
+                                      <button class="buttonCompleted" type="submit">Mark as Completed</button>
+                                  </form>
+                                  
+                                  <a href="{% url 'notes:edit_note' note.id %}" class="btn btn-warning">Edit</a>
+                              {% endif %}
                           {% endif %}
-
-                          <form method="POST" class="switchform" action="{% url 'notes:mark_note_important' note.id %}">
-                              {% csrf_token %}
-                              <button type="submit" class="buttonCompleted">
-                                  {% if note.is_important %}
-                                      Unmark as important
-                                  {% else %}
-                                      Mark as important
-                                  {% endif %}
-                              </button>
-                          </form>
-                      {% endif %}
-
-                      {% if user.is_authenticated and user.type == "REGULARUSER" %}
-                        {% if note.completed %}
-                            <p>This note is completed and cannot be edited.</p>
-                        {% else %}
-                            <form method="post" class='completed' action="{% url 'notes:toggle_completed' note.id %}" class="completed-form">
-                                {% csrf_token %}
-                            <form method="post" action="{% url 'notes:toggle_completed' note.id %}">
-                                    {% csrf_token %}
-                            <button class="buttonCompleted" type="submit" class="btn btn-success">Mark as Completed</button>
-                            </form>
-                            </form>
-                            
-                            <form action="{% url 'notes:edit_note' note.id %}" class="edit" method="get" style="display: inline;">
-                                <button type="submit" class="btn btn-warning">Edit</button>
-                            </form>
-                
-                        {% endif %}
-                     {% endif %}
+                      </div>
                   </div>
               </div>
           {% empty %}
@@ -60,36 +39,30 @@
           {% endfor %}
       </div>
   </div>
-</div>
 
-
-  {% if user.is_authenticated and user.type == 'REGULARUSER' %}
-    {% if private_notes %}
-    <div class="row">
-        <div class="col-md-12">
+  {% if user.is_authenticated and user.type == 'REGULARUSER' and private_notes %}
+    <div class="row justify-content-center">
+        <div class="col-md-8">
             <h2 class="mt-5 mb-4 text-center">Private Notes</h2>
             {% for note in private_notes %}
-                <div class="card my-4 shadow-sm p-3 mb-5">
-                    <div class="card-body m-2">
-                        <h4>{{ note.title }}</h4>
-                        <p>{{ note.content }}</p>
-                        <p><small>Created on: {{ note.pub_date }}</small></p>
-                          {% if note.completed %}
-                            <p>This note is completed and cannot be edited.</p>
-                        {% else %}
-                            <form method="post" class='completed' action="{% url 'notes:toggle_completed' note.id %}" class="completed-form">
-                                {% csrf_token %}
-                            <form method="post" action="{% url 'notes:toggle_completed' note.id %}">
+                <div class="card my-4 shadow-sm p-3">
+                    <div class="card-body">
+                        <div class="note {% if note.category == 'business' %} business-note {% elif note.category == 'personal' %} personal-note {% endif %}">
+                            <h4>{{ note.title }}</h4>
+                            <p>{{ note.content }}</p>
+                            <p><small>Created on: {{ note.pub_date }}</small></p>
+
+                            {% if note.completed %}
+                                <p>This note is completed and cannot be edited.</p>
+                            {% else %}
+                                <form class="completed" method="post" action="{% url 'notes:toggle_completed' note.id %}">
                                     {% csrf_token %}
-                            <button class="buttonCompleted" type="submit" class="btn btn-success">Mark as Completed</button>
-                            </form>
-                            </form>
-                            
-                            <form action="{% url 'notes:edit_note' note.id %}" class="edit" method="get" style="display: inline;">
-                                <button type="submit" class="btn btn-warning">Edit</button>
-                            </form>
-                
-                        {% endif %}
+                                    <button class="buttonCompleted" type="submit">Mark as Completed</button>
+                                </form>
+                                
+                                <a href="{% url 'notes:edit_note' note.id %}" class="btn btn-warning">Edit</a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             {% empty %}
@@ -97,22 +70,8 @@
             {% endfor %}
         </div>
     </div>
-    {% endif %}
   {% endif %}
-  {% if user.is_authenticated and user.type == 'ADMIN' %}
-    <div class="row mt-5">
-        <div class="col-md-12">
-            <h2 class="mt-5 mb-4 text-center">Admin Panel</h2>
-            <p>Welcome, {{ user.username }}! Here you can manage users and perform administrative tasks.</p>
-            
-            <a href="{% url 'accounts:user_list' %}" class="btn btn-primary">View All Users</a>
 
-            <hr>
+</div>
 
-            <h4>Admin-specific Actions</h4>
-            <p>You have full access to the user management system.</p>
-        </div>
-    </div>
-    {% endif %}
-
-  {% endblock content %}
+{% endblock %}

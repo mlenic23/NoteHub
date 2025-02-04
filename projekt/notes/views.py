@@ -58,7 +58,8 @@ def add_note(request):
         is_public = 'is_public' in request.POST
         is_important = 'is_important' in request.POST and request.user.type == 'SUPERUSER'
         is_private = "is_private" in request.POST
-        category = request.POST.get('category') if request.user.type == 'REGULARUSER' else None
+        category = request.POST.get('category', 'personal') if request.user.type == 'REGULARUSER' else None
+
 
         if not title or not content:
             return HttpResponse("Title and content are required.", status=400)
