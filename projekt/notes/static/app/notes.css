@@ -481,6 +481,7 @@ body.dark {
     cursor: pointer;
     width:200px;
     font-size: 17px;
+    margin-left:37px;
 }
 
 .switch:hover {
@@ -668,4 +669,25 @@ body.dark {
 .no-delete {
     font-style: italic;
     color: #888;
+}
+
+.business-note {
+    border-color: blue;
+    background-color: #e0f7ff;  
+}
+
+.personal-note {
+    border-color: gray;
+    background-color: #f0f0f0;  
+}
+
+
+.dark .business-note {
+    background-color: #2a3d4d; 
+    border-color: #61dafb;
+}
+
+.dark .personal-note {
+    background-color: #333;
+    border-color: #999;
 }

@@ -19,6 +19,13 @@
         {% if user.is_authenticated and user.type == 'REGULARUSER' %}
             <label for="is_private">Make it private:</label>
             <input type="checkbox" id="is_private" name="is_private"><br><br>
+
+            <label for="category">Category:</label>
+            <select name="category" id="category">
+                <option value="business">Business</option>
+                <option value="personal">Personal</option>
+            </select>
+
         {% endif %}
 
         {% if user.is_authenticated and user.type == 'SUPERUSER' %}

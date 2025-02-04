@@ -26,6 +26,11 @@ class Note(models.Model):
         ('personal', 'Personal'),
     ]
 
+    CATEGORY_CHOICES = [
+        ('business', 'Business'),
+        ('personal', 'Personal'),
+    ]
+
     user = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, null=True, blank=True, related_name='notes')
     title = models.CharField(max_length=200)
     content = models.TextField()
@@ -40,6 +45,7 @@ class Note(models.Model):
     is_private = models.BooleanField(default=False)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, blank=True, null=True)
     approved = models.BooleanField(default=False)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='personal')
     
 
     def __str__(self):

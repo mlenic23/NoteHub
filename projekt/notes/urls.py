@@ -22,6 +22,7 @@ urlpatterns = [
     path('toggle-theme/', views.toggle_theme, name="toggle_theme"),
     path('<int:note_id>/toggle_completed/', views.toggle_completed, name='toggle_completed'),
     path('<int:note_id>/edit/', views.edit_note, name='edit_note'),
+    path('home/', views.home, name='home'),
 ]
 
 

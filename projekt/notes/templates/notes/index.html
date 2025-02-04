@@ -19,32 +19,55 @@
     </form>
 
     <div class="notes-container">
-        {% for note in latest_note_list %}
-        <div class="note">
-            {% if user.is_staff %} 
-                {% if not note.approved %}
-                    <a href="{% url 'accounts:approve_note' note.id %}" class="approve-button">Approve Note</a>
-                {% else %}
-                    <p class="approved-message"><em>This note has been approved by the administrator.</em><br>
-                                                <strong>Community guidelines are in place.</strong></p>
-                    
-                    <a href="{% url 'accounts:unapprove_note' note.id %}" class="unapprove-button">Unapprove Note</a>
-                {% endif %}
+        {% if user.is_authenticated %}
+            {% if user.is_regular %}
+                {% for note in latest_note_list %}
+                    <div class="note {% if note.category == 'business' %}business-note{% elif note.category == 'personal' %}personal-note{% endif %}">
+    
+                        <h3><a href="{% url 'notes:detail' note.id %}">{{ note.title }}</a></h3>
+                        <p>{{ note.content }}</p>
+    
+                        <p><strong>Likes:</strong> {{ note.likes }}</p>
+                        <p>Published: {{ note.pub_date }}</p>
+                        <a href="{% url 'notes:delete_note' note.id %}" onclick="return confirm('Are you sure you want to delete this note?');">
+                            Delete
+                        </a>
+                    </div>
+                {% empty %}
+                    <p>No notes available.</p>
+                {% endfor %}
+            {% else %}
+                {% for note in latest_note_list %}
+                    <div class="note">
+                        {% if user.is_staff %}
+                            {% if not note.approved %}
+                                <a href="{% url 'accounts:approve_note' note.id %}" class="approve-button">Approve Note</a>
+                            {% else %}
+                                <p class="approved-message"><em>This note has been approved by the administrator.</em><br>
+                                    <strong>Community guidelines are in place.</strong></p>
+                                <a href="{% url 'accounts:unapprove_note' note.id %}" class="unapprove-button">Unapprove Note</a>
+                            {% endif %}
+                        {% endif %}
+    
+                        <h3><a href="{% url 'notes:detail' note.id %}">{{ note.title }}</a></h3>
+                        <p>{{ note.content }}</p>
+    
+                        <p><strong>Likes:</strong> {{ note.likes }}</p>
+                        <p>Published: {{ note.pub_date }}</p>
+                        <a href="{% url 'notes:delete_note' note.id %}" onclick="return confirm('Are you sure you want to delete this note?');">
+                            Delete
+                        </a>
+                    </div>
+                {% empty %}
+                    <p>No notes available.</p>
+                {% endfor %}
             {% endif %}
-
-
-            <h3><a href="{% url 'notes:detail' note.id %}">{{ note.title }}</a></h3>
-            <p>{{ note.content }}</p>
-
-            <p><strong>Likes:</strong> {{ note.likes }}</p>
-            <p>Published: {{ note.pub_date }}</p>
-            <a href="{% url 'notes:delete_note' note.id %}" onclick="return confirm('Are you sure you want to delete this note?');">
-                Delete
-            </a>
-        </div>
-        {% empty %}
-        <p>No notes available.</p>
-        {% endfor %}
+        {% else %}
+            <p>You need to be logged in to view the notes.</p>
+        {% endif %}
     </div>
+    
+
+  
     
 {% endblock %}

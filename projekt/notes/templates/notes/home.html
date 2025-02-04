@@ -15,7 +15,23 @@
         </div>
         <h1 class="welcome">Welcome to NoteHub</h1>
         <p class="organizeNotes">Organize your notes easily.</p>
-    </div>
+    
+
+    {% if user.is_authenticated %}
+    <form class = "switchform" action="{% url 'notes:toggle_theme' %}" method="post">
+        {% csrf_token %}
+        <button class="switch" type="submit">
+            {% if request.session.theme == "dark" %}
+                Switch to Light Mode
+            {% else %}
+                Switch to Dark Mode
+            {% endif %}
+        </button>
+    </form>
+    {% endif %}
 </div>
+</div>
+    
+
 {% endblock %}
 

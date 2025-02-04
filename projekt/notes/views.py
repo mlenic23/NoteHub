@@ -58,6 +58,7 @@ def add_note(request):
         is_public = 'is_public' in request.POST
         is_important = 'is_important' in request.POST and request.user.type == 'SUPERUSER'
         is_private = "is_private" in request.POST
+        category = request.POST.get('category') if request.user.type == 'REGULARUSER' else None
 
         if not title or not content:
             return HttpResponse("Title and content are required.", status=400)
@@ -68,7 +69,8 @@ def add_note(request):
             content=content, 
             is_public=is_public, 
             is_important=is_important,
-            is_private=is_private
+            is_private=is_private,
+             category=category if request.user.type == 'REGULARUSER' else None
         )
         
         return redirect("notes:index")
@@ -178,13 +180,12 @@ def locked_notes(request, user_id):
 @login_required
 def toggle_theme(request):
     if request.method == 'POST':
-        if request.user.is_regular_user():
             if request.session.get('theme') == 'dark':
                 request.session['theme'] = 'light'
             else:
                 request.session['theme'] = 'dark'
 
-    return redirect('notes:index')  
+    return redirect('notes:home')  
 
 
 @login_required
