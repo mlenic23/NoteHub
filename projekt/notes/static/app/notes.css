@@ -695,3 +695,16 @@ body.dark {
 .center-container {
     text-align: center;         
 }
+
+.note.approved-note {
+    background-color: #e0ffe0; 
+    border: 2px solid #4CAF50;  
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.note.approved-note .approved-message {
+    font-size: 1.1em;
+    color: #4CAF50;
+    margin-bottom: 10px;
+}
