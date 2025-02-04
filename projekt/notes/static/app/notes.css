@@ -691,3 +691,7 @@ body.dark {
     background-color: #333;
     border-color: #999;
 }
+
+.center-container {
+    text-align: center;         
+}

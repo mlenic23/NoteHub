@@ -9,6 +9,11 @@
   <div class="row justify-content-center">
       <div class="col-md-8">
           <h2 class="mt-5 mb-4 text-center">Public Notes</h2>
+          <div class="center-container">
+            {% if user.is_authenticated and user.type == "ADMIN" %}
+                <a href="{% url 'accounts:user_list' %}" class="btn btn-danger">Manage Users</a>
+            {% endif %}
+          </div>
           {% for note in public_notes %}
               <div class="card my-4 shadow-sm p-3">
                   <div class="card-body">
@@ -71,7 +76,6 @@
         </div>
     </div>
   {% endif %}
-
 </div>
 
 {% endblock %}
