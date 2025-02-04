@@ -45,7 +45,7 @@ class Note(models.Model):
     is_private = models.BooleanField(default=False)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, blank=True, null=True)
     approved = models.BooleanField(default=False)
-    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='personal')
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='personal', blank=True, null=True)
     
 
     def __str__(self):

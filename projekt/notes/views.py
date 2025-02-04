@@ -20,6 +20,13 @@ def index(request):
     if request.user.is_authenticated:
          notes = notes | Note.objects.filter(user=request.user, is_private=True)
 
+    if request.user.type == 'REGULARUSER':
+        for note in notes:
+            if note.user.type == 'SUPERUSER' and note.is_public:
+                note.display_role = note.role  
+            else:
+                note.display_role = None
+
     if order == 'asc':
         notes = notes.order_by('-is_important', 'pub_date')
     else:
@@ -52,13 +59,17 @@ def like(request, note_id):
 
 @login_required
 def add_note(request):
+
+    role_choices = Note.ROLE_CHOICES
+
     if request.method == 'POST':
         title = request.POST.get('title')
         content = request.POST.get('content')
         is_public = 'is_public' in request.POST
         is_important = 'is_important' in request.POST and request.user.type == 'SUPERUSER'
         is_private = "is_private" in request.POST
-        category = request.POST.get('category', 'personal') if request.user.type == 'REGULARUSER' else None
+        role = request.POST.get('role', 'personal') if request.user.type == 'SUPERUSER' else None
+        category = request.POST.get('category') if request.user.type == 'REGULARUSER' else None
 
 
         if not title or not content:
@@ -71,12 +82,16 @@ def add_note(request):
             is_public=is_public, 
             is_important=is_important,
             is_private=is_private,
-             category=category if request.user.type == 'REGULARUSER' else None
+            role=role,
+            category=category 
         )
-        
-        return redirect("notes:index")
+        if request.user.type == 'SUPERUSER':
+            if not is_public:
+                return redirect('notes:lock_note', note_id=note.id)
 
-    return render(request, 'notes/add_note.html')
+        return redirect("notes:index")
+    
+    return render(request, 'notes/add_note.html', {'role_choices': role_choices})
 
 
 
@@ -144,6 +159,7 @@ def lock_note(request, note_id):
                 note.password = password
                 note.is_locked = True
                 note.save()
+
                 return redirect('notes:locked_notes', user_id=request.user.id)  
         return render(request, 'notes/lock_note.html', {'note': note})
     return HttpResponse("You do not have permission to lock this note.", status=403)

@@ -38,6 +38,13 @@
                     {% endif %}
     
                     <h3><a href="{% url 'notes:detail' note.id %}">{{ note.title }}</a></h3>
+                    {% if user.is_authenticated and note.user.type == 'SUPERUSER' %}
+                        {% if note.role %}
+                            <p><strong>Role:</strong> {{ note.role }}</p>
+                        {% else %}
+                            <p>No role assigned.</p>
+                        {% endif %}
+                    {% endif %}
                     <p>{{ note.content }}</p>
     
                     <p><strong>Likes:</strong> {{ note.likes }}</p>
