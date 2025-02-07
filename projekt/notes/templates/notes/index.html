@@ -49,12 +49,6 @@
     
                     <p><strong>Likes:</strong> {{ note.likes }}</p>
                     <p>Published: {{ note.pub_date }}</p>
-    
-                    {% if note.user == user %}
-                    <a href="{% url 'notes:delete_note' note.id %}" 
-                       onclick="return confirm('Are you sure you want to delete this note?');">
-                        Delete
-                    </a>{% endif %}
                 </div>
             {% empty %}
                 <p>No notes available.</p>
