@@ -4,22 +4,32 @@
 
 {% block content %}
     <h2>{{ note.title }}</h2>
-    <p>{{ note.content }}</p>
-    <p>Published: {{ note.pub_date }}</p>
+    <div class="note-content">
+        <p class="note-actual-content">{{ note.content }}</p>
+        <p class="published">Published: {{ note.pub_date }}</p>
+        <div class="text-likebutton">
+            <p><em>Like this note? Consider giving it a thumbs up!</em></p>
+            <form class = 'like' action="{% url 'notes:like' note.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Like</button>
+            </form>
+        </div>
+    </div>
 
-    <form class = 'like' action="{% url 'notes:like' note.id %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Like</button>
-    </form>
-
-    <h2>Comments</h2>
+    <h2 style="text-decoration: underline;">
+        Comments
+    </h2>
     {% for comment in comments %}
-        <p>{{comment.text}} ({{comment.created_at}})</p>
+    <div class="comment">
+        <p class="comment-text">{{ comment.text }}</p>
+        <p class="comment-date">{{ comment.created_at }}</p>
+    </div>
     {% empty %}
-        <p>No comments yet.</p>
+        <p class="no-comment">No comments yet.</p>
     {% endfor %}
 
-    <h3>Add a Comment</h3>
+
+    <h3 style="margin-left: 300px; color: #2980b9;"><em>Add a Comment</em></h3>
     <form method="post" action="{% url 'notes:add_comment' note.id %}">
         {% csrf_token %}
         <textarea name="comment_text" rows="4" cols="50" placeholder="Write a comment..."></textarea><br>
@@ -27,5 +37,5 @@
     </form>
 
     
-    <a href="{% url 'notes:index' %}">Back to Notes</a>
+    <a href="{% url 'notes:index' %}" class="back-to-notes">Back to Notes</a>
 {% endblock %}
