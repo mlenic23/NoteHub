@@ -127,11 +127,12 @@ def mark_note_important(request, note_id):
 def edit_note(request, note_id):
     note = get_object_or_404(Note, id=note_id)
 
-    if note.user != request.user:
+    if note.user != request.user or note.completed:
         return redirect('notes:index')  
 
     if request.method == 'POST':
-        form = NoteForm(request.POST, instance=note)
+        note.title = request.POST.get('title')
+        note.content = request.POST.get('content') 
 
         password = request.POST.get('password')
         if password: 
@@ -139,13 +140,9 @@ def edit_note(request, note_id):
             note.is_locked = True  
             note.save()
 
-        if form.is_valid():
-            form.save()
-            return redirect('accounts:profile', user_id=request.user.id)  
-    else:
-        form = NoteForm(instance=note)
+        return redirect('accounts:profile', user_id=request.user.id)
 
-    return render(request, 'notes/edit_note.html', {'form': form, 'note': note})
+    return render(request, 'notes/edit_note.html', {'note': note})
 
 
 @user_passes_test(lambda u: u.is_authenticated and u.type == 'SUPERUSER')
@@ -215,20 +212,6 @@ def toggle_completed(request, note_id):
 
     return redirect('notes:index')
 
-@login_required
-def edit_note(request, note_id):
-    note = get_object_or_404(Note, id=note_id)
-
-    if note.user != request.user or note.completed:
-        return redirect('notes:index') 
-
-    if request.method == 'POST':
-        note.title = request.POST.get('title')
-        note.content = request.POST.get('content')
-        note.save()
-        return redirect('notes:index')  
-
-    return render(request, 'notes/edit_note.html', {'note': note})
 
 @login_required
 def profile(request, user_id):

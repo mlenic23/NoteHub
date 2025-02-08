@@ -36,6 +36,14 @@
         <button type="submit">Submit</button>
     </form>
 
+    {% if note.user == user %}
+        <div class="delete-container">
+            <a href="{% url 'notes:delete_note' note.id %}" 
+                onclick="return confirm('Are you sure you want to delete this note?');">
+                Delete note
+            </a>
+        </div>
+    {% endif %}
     
     <a href="{% url 'notes:index' %}" class="back-to-notes">Back to Notes</a>
 {% endblock %}

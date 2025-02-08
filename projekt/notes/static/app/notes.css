@@ -777,3 +777,27 @@ body.dark {
 .back-to-notes:hover {
     text-decoration: underline;
 }
+
+.locked-notes-container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 5px;
+}
+
+.locked-note-card {
+    background-color: hsl(210, 17%, 98%, 0.9);
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.locked-note-card-body {
+    padding: 10px;
+}
+
+.delete-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}

@@ -19,6 +19,9 @@
                           <p><strong>Likes:</strong> {{ note.likes }}</p>
                           <p><small>Created on: {{ note.pub_date }}</small></p>
                           {% if note.user == user %}
+                            {% if user.type == "SUPERUSER" %}
+                                <a href="{% url 'notes:edit_note' note.id %}">Edit</a> <br>
+                            {% endif %}
                             <a href="{% url 'notes:delete_note' note.id %}" 
                             onclick="return confirm('Are you sure you want to delete this note?');">
                                 Delete
