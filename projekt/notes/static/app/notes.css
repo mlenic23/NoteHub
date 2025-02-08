@@ -35,12 +35,18 @@ nav a:hover {
 .nav-left {
     display: flex;
     gap: 15px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding: 15px;
+    margin-left: 12px;
 }
 
 .nav-right {
     display: flex;
     gap: 15px;
     align-items: center;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding: 15px;
+    margin-right: 12px;
 }
 
 .container {
@@ -723,6 +729,14 @@ body.dark {
     font-size: 24px;
 }
 
+.no-public-notes{
+    color: #3765e1;
+    text-align: center;
+    margin-top: 50px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 18px;
+}
+
 .published{
     font-size: 14px;
 }
@@ -800,4 +814,13 @@ body.dark {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+}
+
+.manage-users{
+    display: block;
+    text-align: center;
+}
+
+.manage-users:hover{
+    text-decoration: underline;
 }
