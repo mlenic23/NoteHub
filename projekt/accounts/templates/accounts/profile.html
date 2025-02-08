@@ -2,21 +2,15 @@
 
 {% block content %}
 
-<div class="container">
-  <h1 class="mb-5 mt-5 text-center">{{ profile_user.username }}'s notes</h1>
+  <h1>{{ profile_user.username }}'s notes</h1>
 
-  <!-- PUBLIC NOTES -->
-  <div class="row justify-content-center">
-      <div class="col-md-8">
-          <h2 class="mt-5 mb-4 text-center">Public Notes</h2>
-          <div class="center-container">
+    <h2>Public Notes</h2>
+          <div>
             {% if user.is_authenticated and user.type == "ADMIN" %}
-                <a href="{% url 'accounts:user_list' %}" class="btn btn-danger">Manage Users</a>
+                <a href="{% url 'accounts:user_list' %}">Manage Users</a>
             {% endif %}
           </div>
           {% for note in public_notes %}
-              <div class="card my-4 shadow-sm p-3">
-                  <div class="card-body">
                       <div class="note {% if note.category == 'business' %} business-note {% elif note.category == 'personal' %} personal-note {% endif %}">
                           <h4>{{ note.title }}</h4>
                           {% if user.is_authenticated and user.type == "SUPERUSER" %}
@@ -35,30 +29,23 @@
                               {% if note.completed %}
                                   <p>This note is completed and cannot be edited.</p>
                               {% else %}
-                                  <form class="completed" method="post" action="{% url 'notes:toggle_completed' note.id %}">
+                                  <form class= completed method="post" action="{% url 'notes:toggle_completed' note.id %}">
                                       {% csrf_token %}
-                                      <button class="buttonCompleted" type="submit">Mark as Completed</button>
+                                      <button type="submit" class="buttonCompleted">Mark as Completed</button>
                                   </form>
                                   
-                                  <a href="{% url 'notes:edit_note' note.id %}" class="btn btn-warning">Edit</a>
+                                  <a href="{% url 'notes:edit_note' note.id %}">Edit</a>
                               {% endif %}
                           {% endif %}
                       </div>
-                  </div>
-              </div>
           {% empty %}
-              <p class="text-center">No public notes available.</p>
+              <p>No public notes available.</p>
           {% endfor %}
-      </div>
-  </div>
+
 
   {% if user.is_authenticated and user.type == 'REGULARUSER' and private_notes %}
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h2 class="mt-5 mb-4 text-center">Private Notes</h2>
+            <h2>Private Notes</h2>
             {% for note in private_notes %}
-                <div class="card my-4 shadow-sm p-3">
-                    <div class="card-body">
                         <div class="note {% if note.category == 'business' %} business-note {% elif note.category == 'personal' %} personal-note {% endif %}">
                             <h4>{{ note.title }}</h4>
                             <p>{{ note.content }}</p>
@@ -67,22 +54,17 @@
                             {% if note.completed %}
                                 <p>This note is completed and cannot be edited.</p>
                             {% else %}
-                                <form class="completed" method="post" action="{% url 'notes:toggle_completed' note.id %}">
+                                <form method="post" action="{% url 'notes:toggle_completed' note.id %}">
                                     {% csrf_token %}
-                                    <button class="buttonCompleted" type="submit">Mark as Completed</button>
+                                    <button type="submit">Mark as Completed</button>
                                 </form>
                                 
-                                <a href="{% url 'notes:edit_note' note.id %}" class="btn btn-warning">Edit</a>
+                                <a href="{% url 'notes:edit_note' note.id %}">Edit</a>
                             {% endif %}
                         </div>
-                    </div>
-                </div>
             {% empty %}
-                <p class="text-center">No private notes available.</p>
+                <p>No private notes available.</p>
             {% endfor %}
-        </div>
-    </div>
   {% endif %}
-</div>
 
 {% endblock %}

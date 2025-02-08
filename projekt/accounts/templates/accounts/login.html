@@ -1,8 +1,7 @@
 {% extends 'notes/base.html' %}
 
 {% block content %}
-  <div class="container">
-    <h1 class="mb-5 mt-5">Login</h1>
+    <h1>Login</h1>
 
     <form method="post">
       {% csrf_token %}
@@ -10,5 +9,4 @@
       <button type="submit">Login</button>
     </form>
 
-  </div>
 {% endblock %}
