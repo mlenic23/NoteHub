@@ -20,12 +20,13 @@ def index(request):
     if request.user.is_authenticated:
          notes = notes | Note.objects.filter(user=request.user, is_private=True)
 
-    if request.user.type == 'REGULARUSER':
-        for note in notes:
-            if note.user.type == 'SUPERUSER' and note.is_public:
-                note.display_role = note.role  
-            else:
-                note.display_role = None
+    if request.user.is_authenticated:     
+        if request.user.type == 'REGULARUSER':
+            for note in notes:
+                if note.user.type == 'SUPERUSER' and note.is_public:
+                    note.display_role = note.role  
+                else:
+                    note.display_role = None
 
     if order == 'asc':
         notes = notes.order_by('-is_important', 'pub_date')
