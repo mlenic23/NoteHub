@@ -35,7 +35,6 @@ class Note(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
     pub_date = models.DateTimeField(auto_now_add=True)
-    likes = models.PositiveIntegerField(default=0)
     private_notes = models.ManyToManyField(PrivateNoteModel, blank=True)
     is_public = models.BooleanField(default=True)
     is_important = models.BooleanField(default=False)
@@ -46,6 +45,7 @@ class Note(models.Model):
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, blank=True, null=True)
     approved = models.BooleanField(default=False)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='personal', blank=True, null=True)
+    likes = models.ManyToManyField(CustomUser, related_name='liked_notes', blank=True)
     
 
     def __str__(self):
@@ -59,8 +59,6 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Comment on {self.note.title} by {self.created_at}"
-
-
 
 class Account(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)

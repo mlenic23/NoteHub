@@ -268,6 +268,7 @@ form {
     max-width: 600px;
 }
 
+
 .like{
     background-color: none;
     border: none;
@@ -506,20 +507,13 @@ body.dark {
         font-size: 17px;
 }
 
-.completed{
-    background-color: none;
-    border: none;
-    border-radius: none;
-    padding: 0px;
-    margin: 0px;
-    width: 100%;
-    max-width: 0px;
-    padding-bottom:20px;
-
-}
 
 .buttonCompleted{
+    display:flex;
+    align-content: center;
+    align-items: center;
     width: 200px;
+    background: none;
 }
 
 .edit{
@@ -709,10 +703,17 @@ body.dark {
     border-radius: 8px;
 }
 
+.dark .note.approved-note{
+    background-color: rgb(7, 44, 7);
+}
 .note.approved-note .approved-message {
     font-size: 1.1em;
     color: #4CAF50;
     margin-bottom: 10px;
+}
+
+.dark .approved-note .approved-message {
+    color: #a2e5a4;
 }
 
 .note-content {
@@ -823,4 +824,20 @@ body.dark {
 
 .manage-users:hover{
     text-decoration: underline;
+}
+
+.completed{
+    background-color: pink;
+    border: 1px solid black;
+    padding: 0px;
+    margin: 0px;
+    width: 0%;
+    max-width: 0px;
+    padding-bottom:20px;
+
+}
+
+.pin{
+    padding-top:0px;
+    float:right;
 }

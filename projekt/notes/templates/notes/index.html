@@ -21,44 +21,50 @@
     <div class="notes-container">
         {% if user.is_authenticated %}
             {% for note in latest_note_list %}
-                <div class="note {% if note.approved %}approved-note{% endif %}">
-                    {% if note.approved %}
-                        <p class="approved-message">
-                            <em>This note has been approved by the administrator.</em><br>
-                            <strong>Community guidelines are in place.</strong>
-                        </p>
-                    {% endif %}
-                    
-                    {% if user.is_staff %}
-                        {% if not note.approved %}
-                            <a href="{% url 'accounts:approve_note' note.id %}" class="approve-button">Approve Note</a>
-                        {% else %}
-                            <a href="{% url 'accounts:unapprove_note' note.id %}" class="unapprove-button">Unapprove Note</a>
+                {% if note.is_public %}
+                    <div class="note {% if note.approved %}approved-note{% endif %}">
+                        {% if note.approved %}
+                            <p class="approved-message">
+                                <em>This note has been approved by the administrator.</em><br>
+                                <strong>Community guidelines are in place.</strong>
+                            </p>
                         {% endif %}
-                    {% endif %}
-    
-                    <h3><a href="{% url 'notes:detail' note.id %}">{{ note.title }}</a></h3>
-                    {% if user.is_authenticated and note.user.type == 'SUPERUSER' %}
-                        {% if note.role %}
-                            <p><strong>Role:</strong> {{ note.role }}</p>
-                        {% else %}
-                            <p>No role assigned.</p>
+                        
+                        {% if user.is_staff %}
+                            {% if not note.approved %}
+                                <a href="{% url 'accounts:approve_note' note.id %}" class="approve-button">Approve Note</a>
+                            {% else %}
+                                <a href="{% url 'accounts:unapprove_note' note.id %}" class="unapprove-button">Unapprove Note</a>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                    <p>{{ note.content }}</p>
+
+                        {% if user.is_authenticated and note.user.type == 'SUPERUSER' %}
+                            {% if note.is_important %}
+                                <div class="pin">&#128204</div>
+                            {% endif %}
+                        {% endif %}
+
+                        <h3><a href="{% url 'notes:detail' note.id %}">{{ note.title }}</a></h3>
+                        {% if user.is_authenticated and note.user.type == 'SUPERUSER' %}
+
+                            {% if note.role %}
+                                <p><strong>Role:</strong> {{ note.role }}</p>
+                            {% else %}
+                                <p>No role assigned.</p>
+                            {% endif %}
+                        {% endif %}
+                        <p>{{ note.content }}</p>
     
-                    <p><strong>Likes:</strong> {{ note.likes }}</p>
-                    <p>Published: {{ note.pub_date }}</p>
-                </div>
+                        <p>Likes: {{ note.likes.count }}</p>
+                        <p>Published: {{ note.pub_date }}</p>
+                    </div>
+                {% endif %}
             {% empty %}
-                <p>No notes available.</p>
+                <p>No public notes available.</p>
             {% endfor %}
         {% else %}
             <p>You need to be logged in to view the notes.</p>
         {% endif %}
     </div>
-    
-
-  
     
 {% endblock %}

@@ -7,12 +7,21 @@
     <div class="note-content">
         <p class="note-actual-content">{{ note.content }}</p>
         <p class="published">Published: {{ note.pub_date }}</p>
+
+    {% if note.is_public %}
         <div class="text-likebutton">
             <p><em>Like this note? Consider giving it a thumbs up!</em></p>
-            <form class = 'like' action="{% url 'notes:like' note.id %}" method="post">
+
+            {% if request.user.is_authenticated %}
+            <form class="like" action="{% url 'notes:like_unlike' note.id %}" method="post">
                 {% csrf_token %}
-                <button type="submit">Like</button>
+                {% if user_has_liked %}
+                    <button type="submit">Unlike</button>
+                {% else %}
+                    <button type="submit">Like</button>
+                {% endif %}
             </form>
+            {% endif %}
         </div>
     </div>
 
@@ -35,6 +44,7 @@
         <textarea name="comment_text" rows="4" cols="50" placeholder="Write a comment..."></textarea><br>
         <button type="submit">Submit</button>
     </form>
+    {% endif %}
 
     {% if note.user == user %}
         <div class="delete-container">

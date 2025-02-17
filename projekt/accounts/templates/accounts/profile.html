@@ -1,5 +1,7 @@
 {% extends 'notes/base.html' %}
 
+{% load static %}
+
 {% block content %}
 
   <h1>{{ profile_user.username }}'s notes</h1>
@@ -18,26 +20,22 @@
                           {% if user.is_authenticated and user.type == "SUPERUSER" %}
                           <p><strong>Role:</strong> {{ note.get_role_display }}</p>{% endif %}
                           <p>{{ note.content }}</p>
-                          <p><strong>Likes:</strong> {{ note.likes }}</p>
+                          <a href="{% url 'notes:detail' note.id %}" class="view-note-button">View Public Note</a>
+                          <p>Likes: {{ note.likes.count }}</p>
                           <p><small>Created on: {{ note.pub_date }}</small></p>
                           {% if note.user == user %}
                             {% if user.type == "SUPERUSER" %}
-                                <a href="{% url 'notes:edit_note' note.id %}">Edit</a> <br>
+                                <a href="{% url 'notes:edit_note' note.id %}">Edit | </a>
                             {% endif %}
                             <a href="{% url 'notes:delete_note' note.id %}" 
-                            onclick="return confirm('Are you sure you want to delete this note?');">
-                                Delete
-                            </a>
+                            onclick="return confirm('Are you sure you want to delete this note?');">Delete</a>
                           {% endif %}
 
                           {% if user.is_authenticated and user.type == "REGULARUSER" %}
                               {% if note.completed %}
                                   <p>This note is completed and cannot be edited.</p>
                               {% else %}
-                                  <form class= completed method="post" action="{% url 'notes:toggle_completed' note.id %}">
-                                      {% csrf_token %}
-                                      <button type="submit" class="buttonCompleted">Mark as Completed</button>
-                                  </form>
+                                  <a href="{% url 'notes:toggle_completed' note.id %}"> | Mark as Completed | </a>
                                   
                                   <a href="{% url 'notes:edit_note' note.id %}">Edit</a>
                               {% endif %}
@@ -54,17 +52,19 @@
                         <div class="note {% if note.category == 'business' %} business-note {% elif note.category == 'personal' %} personal-note {% endif %}">
                             <h4>{{ note.title }}</h4>
                             <p>{{ note.content }}</p>
+                            <a href="{% url 'notes:detail' note.id %}" class="view-note-button">View Private Note</a>
                             <p><small>Created on: {{ note.pub_date }}</small></p>
+                            <a href="{% url 'notes:delete_note' note.id %}" 
+                            onclick="return confirm('Are you sure you want to delete this note?');">
+                                Delete
+                            </a>
 
                             {% if note.completed %}
-                                <p>This note is completed and cannot be edited.</p>
+                                  <p>This note is completed and cannot be edited.</p>
                             {% else %}
-                                <form method="post" action="{% url 'notes:toggle_completed' note.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit">Mark as Completed</button>
-                                </form>
-                                
-                                <a href="{% url 'notes:edit_note' note.id %}">Edit</a>
+                                  <a href="{% url 'notes:toggle_completed' note.id %}"> | Mark as Completed | </a>
+
+                                  <a href="{% url 'notes:edit_note' note.id %}">Edit</a>
                             {% endif %}
                         </div>
             {% empty %}

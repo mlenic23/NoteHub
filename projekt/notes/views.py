@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import NoteForm  
 from django.contrib import messages
 from accounts.views import is_admin
+from .models import Note
 
 
 def index(request):
@@ -48,15 +49,21 @@ def home(request):
 def detail(request, note_id):
     note = get_object_or_404(Note, pk=note_id)
     comments = note.comments.all()
+    user_has_liked = request.user in note.likes.all() if request.user.is_authenticated else False
 
-    return render(request, 'notes/detail.html', {'note': note, 'comments': comments})
+    return render(request, 'notes/detail.html', {'note': note, 'comments': comments, 'user_has_liked': user_has_liked})
 
-
-def like(request, note_id):
+@login_required
+def like_unlike(request, note_id):
     note = get_object_or_404(Note, id=note_id)
-    note.likes += 1  
-    note.save()  
-    return redirect("notes:detail", note_id=note_id) 
+
+    if request.user in note.likes.all():
+        note.likes.remove(request.user)  
+    else:
+        note.likes.add(request.user)
+
+    return redirect("notes:detail", note_id=note_id)
+
 
 @login_required
 def add_note(request):
@@ -66,9 +73,10 @@ def add_note(request):
     if request.method == 'POST':
         title = request.POST.get('title')
         content = request.POST.get('content')
-        is_public = 'is_public' in request.POST
+        visibility = request.POST.get('visibility')
+        is_public = visibility == "public"
         is_important = 'is_important' in request.POST and request.user.type == 'SUPERUSER'
-        is_private = "is_private" in request.POST
+        is_private = visibility == "private"
         role = request.POST.get('role', 'personal') if request.user.type == 'SUPERUSER' else None
         category = request.POST.get('category') if request.user.type == 'REGULARUSER' else None
 
@@ -122,7 +130,6 @@ def mark_note_important(request, note_id):
         note.save()
 
         return redirect('accounts:profile', user_id =request.user.id)  
-    return HttpResponse("You do not have permission to mark this note.", status=403)
 
 @login_required
 def edit_note(request, note_id):
