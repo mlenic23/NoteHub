@@ -2,8 +2,8 @@
 
 {% block content %}
     <div class="container">
-        <h2>Lock Note</h2>
-        <p>Enter a password to lock this note. Once locked, you will need the password to access it.</p>
+        <h2>Locked Note</h2>
+        <p class="lock-note">Enter a password to lock this note. Once locked, you will need the password to access it.</p>
 
         <form method="POST">
             {% csrf_token %}

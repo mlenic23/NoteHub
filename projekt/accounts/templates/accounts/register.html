@@ -54,7 +54,7 @@
 
       <div class="form-group">
         <label for="id_type">User Type</label>
-        <select name="type" id="id_type">
+        <select name="type" id="id_type" class="select-user">
             <option value="REGULARUSER" {% if request.POST.type == 'REGULARUSER' %}selected{% endif %}>Regular User</option>
             <option value="SUPERUSER" {% if request.POST.type == 'SUPERUSER' %}selected{% endif %}>Super User</option>
         </select>

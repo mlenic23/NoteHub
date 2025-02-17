@@ -6,12 +6,12 @@
         {% for note in locked_notes %}
             <div class="locked-note-card">
                 <div class="locked-note-card-body">
-                    <h4>{{ note.title }}</h4>
+                    <h4 class="locked-note-title">{{ note.title }}</h4>
                     <a href="{% url 'notes:view_locked_note' note.id %}" class="view-note-button">View Locked Note</a>
                 </div>
             </div>
         {% empty %}
-            <p>No locked notes available.</p>
+            <p class="no-locked-notes">No locked notes available.</p>
         {% endfor %}
     </div>
 {% endblock %}

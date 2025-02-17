@@ -13,15 +13,14 @@
         <label for="content">Content:</label>
         <textarea id="content" name="content" rows="4" cols="50" required></textarea><br><br>
 
-        <label for="is_public">Make it public:</label>
-        <input type="checkbox" id="is_public" name="visibility" value="public"><br><br>
-
         {% if user.is_authenticated and user.type == 'REGULARUSER' %}
+            <label for="is_public">Make it public:</label>
+            <input type="radio" id="is_public" name="visibility" value="public"><br><br>
             <label for="is_private">Make it private:</label>
-            <input type="checkbox" id="is_private" name="visibility" value="private"><br><br>
+            <input type="radio" id="is_private" name="visibility" value="private"><br><br>
 
             <label for="category">Category:</label>
-            <select name="category" id="category">
+            <select name="category" id="category" class="select-category">
                 <option value="business">Business</option>
                 <option value="personal">Personal</option>
             </select>
@@ -29,6 +28,8 @@
         {% endif %}
 
         {% if user.is_authenticated and user.type == 'SUPERUSER' %}
+            <label for="is_public">Make it public:</label>
+            <input type="checkbox" id="is_public" name="visibility" value="public"><br><br>
             <label for="is_important">Mark as Important</label>
             <input type="checkbox" id="is_important" name="is_important">
 
@@ -39,6 +40,12 @@
                 {% endfor %}
             </select>
         {% endif %}
+
+        {% if user.is_authenticated and user.type == 'ADMIN' %}
+            <label for="is_public">Make it public:</label>
+            <input type="radio" id="is_public" name="visibility" value="public"><br><br>
+        {% endif %}
+
         <br><br>
         <button type="submit">Save Note</button>
     </form>
